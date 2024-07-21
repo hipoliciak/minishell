@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/21 19:24:28 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/21 19:40:53 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,11 @@ void	free_shell(t_shell *shell)
 
 int	run_shell(t_shell *shell)
 {
+	char	*line;
+
 	(void)shell;
-	char *line;
-
 	signal(SIGINT, sigint_handler);
-
-	line = (char *)NULL;
+	line = (char *) NULL;
 	while (1)
 	{
 		line = ft_read_line(line);
@@ -71,4 +70,3 @@ int	run_shell(t_shell *shell)
 	}
 	return (0);
 }
-
