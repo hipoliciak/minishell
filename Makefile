@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+         #
+#    By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/16 21:32:26 by dmodrzej          #+#    #+#              #
-#    Updated: 2024/07/16 21:59:14 by dmodrzej         ###   ########.fr        #
+#    Updated: 2024/07/21 15:13:51 by dkolida          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,13 +26,25 @@ OBJ_DIR	=	objs/
 OBJ		=	$(SRC:.c=.o)
 OBJS	=	$(addprefix $(OBJ_DIR), $(OBJ))
 
-# includes
-INC		=	-I includes -I libft
+
 
 # libft
 LIBFT_DIR	=	libft/
 LIBFT_NAME	=	libft.a
 LIBFT		=	$(LIBFT_DIR)$(LIBFT_NAME)
+
+# readline (macOS)
+READLINE_DIR	=	/opt/homebrew/opt/readline
+READLINE_INC	=	-I $(READLINE_DIR)/include
+READLINE_LIB	=	-L $(READLINE_DIR)/lib -lreadline
+# readline (Linux) #TODO check if it works on Linux
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	READLINE_DIR	=	/usr/include/readline
+endif
+
+# includes
+INC		=	-I includes -I libft $(READLINE_INC)
 
 # colors & symbols
 GREEN 	= 	\033[0;32m
@@ -56,7 +68,7 @@ all:		$(LIBFT) $(NAME)
 
 $(NAME):	$(OBJS)
 			@echo "$(CYAN)Compiling libs & program...$(NC)"
-			@$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(LIBFT) $(INC)
+			@$(CC) $(FLAGS) $(OBJS) -o $(NAME) $(LIBFT) $(INC) $(READLINE_LIB)
 			@$(PRINT_LOADING)
 			@echo "$(GREEN)Program compilation successful		$(TICK)$(NC)"
 
@@ -66,7 +78,7 @@ $(OBJ_DIR):
 $(LIBFT):
 			@make -sC $(LIBFT_DIR)
 
-clean:		
+clean:
 			@echo "$(CYAN)Cleaning .o files...$(NC)"
 			@make clean -sC $(LIBFT_DIR)
 			@rm -rf $(OBJ_DIR)
