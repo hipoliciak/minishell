@@ -2,7 +2,7 @@
 
 ## TO DO
 - [X] Display a prompt when waiting for a new command.
-- [ ] history
+- [X] history
 - [ ] Search and launch the right executable (based on the PATH variable or using a relative or an absolute path).
 - [ ] Handle ’ (single quote) which should prevent the shell from interpreting the meta-
 characters in the quoted sequence.

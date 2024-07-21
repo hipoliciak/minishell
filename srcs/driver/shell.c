@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/21 19:40:53 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/21 20:20:44 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	run_shell(t_shell *shell)
 		if (!line)
 		{
 			printf("Exiting minishell.\n");
+			rl_clear_history();
 			break ;
 		}
 		printf("%s\n", line);
