@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/21 16:36:10 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/21 19:24:10 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,16 @@ typedef struct s_shell
 	int		exit_code;
 }	t_shell;
 
+// shell.c
 int		run_shell(t_shell *shell);
+void	free_shell(t_shell *shell);
 t_shell	init_shell(char **env);
+
+// readline_wraper.c
+char	*ft_read_line(char *line);
+
+// signal_handlers.c
+void	sigint_handler(int sig_num);
 
 // Builtins
 char	*get_env_var(char **env, char *var);

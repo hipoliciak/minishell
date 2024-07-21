@@ -6,13 +6,11 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/21 15:37:31 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/21 19:24:28 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void sigint_handler(int sig_num);
 
 t_shell	init_shell(char **env)
 {
@@ -43,33 +41,34 @@ t_shell	init_shell(char **env)
 	return (shell);
 }
 
+void	free_shell(t_shell *shell)
+{
+	int	i;
+
+	i = 0;
+	while (shell->env[i])
+		free(shell->env[i++]);
+	free(shell->env);
+}
+
 int	run_shell(t_shell *shell)
 {
 	(void)shell;
 	char *line;
+
 	signal(SIGINT, sigint_handler);
+
+	line = (char *)NULL;
 	while (1)
 	{
-
-		line = readline("minishell$ ");
+		line = ft_read_line(line);
 		if (!line)
 		{
-			printf("\nExiting minishell.\n");
+			printf("Exiting minishell.\n");
 			break ;
 		}
 		printf("%s\n", line);
-		free(line);
 	}
 	return (0);
 }
 
-void sigint_handler(int sig_num)
-{
-	(void)sig_num;
-	signal(SIGINT, sigint_handler);
-	ft_putendl_fd("", 1);
-	// Prepare readline for the next input
-	rl_on_new_line(); // Tell readline that we've moved to a new (empty) line
-	rl_replace_line("", 0); // Clear the current line
-	rl_redisplay(); // Redisplay the prompt on a new line
-}

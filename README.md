@@ -1,7 +1,7 @@
 # This project is about creating a simple shell.
 
 ## TO DO
-- [ ] Display a prompt when waiting for a new command.
+- [X] Display a prompt when waiting for a new command.
 - [ ] history
 - [ ] Search and launch the right executable (based on the PATH variable or using a relative or an absolute path).
 - [ ] Handle ’ (single quote) which should prevent the shell from interpreting the meta-
