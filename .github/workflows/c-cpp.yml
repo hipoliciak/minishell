@@ -15,3 +15,7 @@ jobs:
         submodules: 'recursive'
     - name: make
       run: make
+    - name: Install Norminette
+      run: pip install norminette
+    - name: Norminette
+      run: norminette srcs includes
