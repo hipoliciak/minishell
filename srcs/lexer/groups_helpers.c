@@ -1,26 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   readline_wraper.c                                  :+:      :+:    :+:   */
+/*   groups_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/21 19:22:49 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/21 23:11:33 by dkolida          ###   ########.fr       */
+/*   Created: 2024/07/22 01:59:50 by dkolida           #+#    #+#             */
+/*   Updated: 2024/07/22 02:05:56 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_read_line(char *line)
+void	print_groups(t_group **groups)
 {
-	if (line)
+	int	i;
+
+	i = 0;
+	while (groups[i])
 	{
-		free (line);
-		line = (char *) NULL;
+		printf("group %d: %s\n", i, groups[i]->str);
+		i++;
 	}
-	line = readline("minishell> $ ");
-	if (line && *line)
-		add_history(line);
-	return (line);
+}
+
+void	free_groups(t_group **pipe_groups)
+{
+	int	i;
+
+	i = 0;
+	while (pipe_groups[i])
+	{
+		if (pipe_groups[i]->in_file_name != NULL)
+			free(pipe_groups[i]->in_file_name);
+		free(pipe_groups[i]->str);
+		free(pipe_groups[i]);
+		i++;
+	}
+	free(pipe_groups);
 }

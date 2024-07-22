@@ -6,11 +6,13 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/21 20:20:44 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/22 02:06:42 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_groups(t_group **groups);
 
 t_shell	init_shell(char **env)
 {
@@ -49,6 +51,7 @@ void	free_shell(t_shell *shell)
 	while (shell->env[i])
 		free(shell->env[i++]);
 	free(shell->env);
+	free(shell->pipe_groups);
 }
 
 int	run_shell(t_shell *shell)
@@ -67,7 +70,9 @@ int	run_shell(t_shell *shell)
 			rl_clear_history();
 			break ;
 		}
-		printf("%s\n", line);
+		shell->pipe_groups = group_input(line);
+		print_groups(shell->pipe_groups);
+		free_groups(shell->pipe_groups);
 	}
 	return (0);
 }

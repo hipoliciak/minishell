@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   readline_wraper.c                                  :+:      :+:    :+:   */
+/*   ft_free_split.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/21 19:22:49 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/21 23:11:33 by dkolida          ###   ########.fr       */
+/*   Created: 2024/07/22 01:32:03 by dkolida           #+#    #+#             */
+/*   Updated: 2024/07/22 01:32:11 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_read_line(char *line)
+void	ft_free_split(char **split)
 {
-	if (line)
+	int	i;
+
+	i = 0;
+	while (split[i])
 	{
-		free (line);
-		line = (char *) NULL;
+		free(split[i]);
+		i++;
 	}
-	line = readline("minishell> $ ");
-	if (line && *line)
-		add_history(line);
-	return (line);
+	free(split);
 }
