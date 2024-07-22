@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+         #
+#    By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/16 21:32:26 by dmodrzej          #+#    #+#              #
-#    Updated: 2024/07/21 16:35:50 by dkolida          ###   ########.fr        #
+#    Updated: 2024/07/22 20:52:56 by dmodrzej         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ READLINE_LIB	=	-L $(READLINE_DIR)/lib -lreadline
 # readline (Linux) #TODO check if it works on Linux
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
-	READLINE_DIR	=	/usr/include/readline
+	READLINE_DIR	=	/lib/x86_64-linux-gnu/
 endif
 
 # includes

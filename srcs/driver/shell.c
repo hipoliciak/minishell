@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/22 02:06:42 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/22 22:25:26 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,15 @@ int	run_shell(t_shell *shell)
 			rl_clear_history();
 			break ;
 		}
-		shell->pipe_groups = group_input(line);
-		print_groups(shell->pipe_groups);
-		free_groups(shell->pipe_groups);
+		if (ft_strchr(line, '|'))
+		{
+			shell->pipe_groups = group_input(line);
+			print_groups(shell->pipe_groups);
+			free_groups(shell->pipe_groups);
+		}
+		else
+			parse_command(shell, line);
+		// free(line); // This line is commented out because it results in a double free error
 	}
 	return (0);
 }

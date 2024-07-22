@@ -6,7 +6,7 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:55:21 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/20 22:56:13 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/22 23:40:05 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ int	builtin_echo(t_shell *shell, char **args)
 	if (nl)
 		ft_putstr_fd("\n", 1);
 	(void)shell;
+	shell->last_exit_code = 0;
 	return (0);
 }

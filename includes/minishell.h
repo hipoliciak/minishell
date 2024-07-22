@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/22 01:42:11 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/22 23:40:20 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,20 @@ typedef struct s_group
 	char	*in_file_name;
 	char	*out_file_name;
 }	t_group;
+
 typedef struct s_shell
 {
 	char	**env;
 	int		exit_code;
+	int		last_exit_code;
 	t_group	**pipe_groups;
 }	t_shell;
 
-//helpers
+// commands
+int		parse_command(t_shell *shell, char *line);
+int		handle_dollars(t_shell *shell, char **args);
+
+// helpers
 void	ft_free_split(char **split);
 
 // groups.c
@@ -46,13 +52,13 @@ int		run_shell(t_shell *shell);
 void	free_shell(t_shell *shell);
 t_shell	init_shell(char **env);
 
-// readline_wraper.c
+// readline_wrapper.c
 char	*ft_read_line(char *line);
 
 // signal_handlers.c
 void	sigint_handler(int sig_num);
 
-// Builtins
+// builtins
 char	*get_env_var(char **env, char *var);
 int		builtin_cd(t_shell *shell, char **args);
 int		builtin_echo(t_shell *shell, char **args);
@@ -62,5 +68,6 @@ int		builtin_pwd(t_shell *shell, char **args);
 int		builtin_unset(t_shell *shell, char **args);
 int		set_env(t_shell *shell, char *key, char *value);
 int		builtin_export(t_shell *shell, char **args);
+int		exec_builtins(t_shell *shell, char **args);
 
 #endif
