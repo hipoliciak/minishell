@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/16 21:58:58 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/22 02:06:42 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_groups(t_group **groups);
 
 t_shell	init_shell(char **env)
 {
@@ -41,8 +43,36 @@ t_shell	init_shell(char **env)
 	return (shell);
 }
 
+void	free_shell(t_shell *shell)
+{
+	int	i;
+
+	i = 0;
+	while (shell->env[i])
+		free(shell->env[i++]);
+	free(shell->env);
+	free(shell->pipe_groups);
+}
+
 int	run_shell(t_shell *shell)
 {
+	char	*line;
+
 	(void)shell;
+	signal(SIGINT, sigint_handler);
+	line = (char *) NULL;
+	while (1)
+	{
+		line = ft_read_line(line);
+		if (!line)
+		{
+			printf("Exiting minishell.\n");
+			rl_clear_history();
+			break ;
+		}
+		shell->pipe_groups = group_input(line);
+		print_groups(shell->pipe_groups);
+		free_groups(shell->pipe_groups);
+	}
 	return (0);
 }

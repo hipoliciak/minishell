@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:02:48 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/20 23:06:00 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/21 19:56:11 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *get_env_var(char **env, char *var)
+char	*get_env_var(char **env, char *var)
 {
 	int	i;
 	int	len;
@@ -28,6 +28,8 @@ char *get_env_var(char **env, char *var)
 	return (NULL);
 }
 
+// #TODO Need to be refactored according to Norminette
+/*
 int	builtin_cd(t_shell *shell, char **args)
 {
 	char	*path;
@@ -62,3 +64,4 @@ int	builtin_cd(t_shell *shell, char **args)
 	free(path);
 	return (0);
 }
+*/

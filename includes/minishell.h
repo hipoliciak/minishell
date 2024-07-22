@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/20 23:14:01 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/22 01:42:11 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,40 @@
 # include <signal.h>
 # include <stdio.h>
 # include <string.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
+typedef struct s_group
+{
+	char	*str;
+	char	*in_file_name;
+	char	*out_file_name;
+}	t_group;
 typedef struct s_shell
 {
 	char	**env;
 	int		exit_code;
+	t_group	**pipe_groups;
 }	t_shell;
 
+//helpers
+void	ft_free_split(char **split);
+
+// groups.c
+t_group	**group_input(char *line);
+void	print_groups(t_group **groups);
+void	parse_groups(t_group **groups);
+
+// shell.c
 int		run_shell(t_shell *shell);
+void	free_shell(t_shell *shell);
 t_shell	init_shell(char **env);
+
+// readline_wraper.c
+char	*ft_read_line(char *line);
+
+// signal_handlers.c
+void	sigint_handler(int sig_num);
 
 // Builtins
 char	*get_env_var(char **env, char *var);

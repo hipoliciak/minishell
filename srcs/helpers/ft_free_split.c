@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_free_split.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 21:38:56 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/21 19:39:02 by dkolida          ###   ########.fr       */
+/*   Created: 2024/07/22 01:32:03 by dkolida           #+#    #+#             */
+/*   Updated: 2024/07/22 01:32:11 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **env)
+void	ft_free_split(char **split)
 {
-	t_shell	shell;
+	int	i;
 
-	(void)argc;
-	(void)argv;
-	shell = init_shell(env);
-	run_shell(&shell);
-	free_shell(&shell);
-	return (0);
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
 }

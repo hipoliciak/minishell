@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   readline_wraper.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 21:38:56 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/21 19:39:02 by dkolida          ###   ########.fr       */
+/*   Created: 2024/07/21 19:22:49 by dkolida           #+#    #+#             */
+/*   Updated: 2024/07/21 23:11:33 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **env)
+char	*ft_read_line(char *line)
 {
-	t_shell	shell;
-
-	(void)argc;
-	(void)argv;
-	shell = init_shell(env);
-	run_shell(&shell);
-	free_shell(&shell);
-	return (0);
+	if (line)
+	{
+		free (line);
+		line = (char *) NULL;
+	}
+	line = readline("minishell> $ ");
+	if (line && *line)
+		add_history(line);
+	return (line);
 }

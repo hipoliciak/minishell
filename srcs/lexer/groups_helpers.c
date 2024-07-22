@@ -1,25 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   groups_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 21:38:56 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/21 19:39:02 by dkolida          ###   ########.fr       */
+/*   Created: 2024/07/22 01:59:50 by dkolida           #+#    #+#             */
+/*   Updated: 2024/07/22 02:05:56 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **env)
+void	print_groups(t_group **groups)
 {
-	t_shell	shell;
+	int	i;
 
-	(void)argc;
-	(void)argv;
-	shell = init_shell(env);
-	run_shell(&shell);
-	free_shell(&shell);
-	return (0);
+	i = 0;
+	while (groups[i])
+	{
+		printf("group %d: %s\n", i, groups[i]->str);
+		i++;
+	}
+}
+
+void	free_groups(t_group **pipe_groups)
+{
+	int	i;
+
+	i = 0;
+	while (pipe_groups[i])
+	{
+		if (pipe_groups[i]->in_file_name != NULL)
+			free(pipe_groups[i]->in_file_name);
+		free(pipe_groups[i]->str);
+		free(pipe_groups[i]);
+		i++;
+	}
+	free(pipe_groups);
 }
