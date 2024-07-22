@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/22 02:06:42 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/22 23:13:06 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	run_shell(t_shell *shell)
 
 	(void)shell;
 	signal(SIGINT, sigint_handler);
-	line = (char *) NULL;
+	line = NULL;
 	while (1)
 	{
 		line = ft_read_line(line);

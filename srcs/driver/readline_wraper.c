@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:22:49 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/21 23:11:33 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/22 23:12:54 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*ft_read_line(char *line)
 	if (line)
 	{
 		free (line);
-		line = (char *) NULL;
+		line = NULL;
 	}
 	line = readline("minishell> $ ");
 	if (line && *line)
