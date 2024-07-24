@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   cd_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:02:48 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/22 21:14:36 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/24 23:20:23 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,19 @@ static int	home_error(void)
 	return (1);
 }
 
-int	builtin_cd(t_shell *shell, char **args)
+int	cd_builtin(t_shell *shell, char **args)
 {
 	char	*path;
 
 	if (!args[1])
 	{
-		path = ft_strdup(get_env_var(shell->env, "HOME"));
+		path = ft_strdup(get_env_var(shell, "HOME"));
 		if (!path)
 			return (home_error());
 	}
 	else if (args[1][0] == '~')
 	{
-		path = ft_strjoin(get_env_var(shell->env, "HOME"), args[1] + 1);
+		path = ft_strjoin(get_env_var(shell, "HOME"), args[1] + 1);
 		if (!path)
 			return (home_error());
 	}

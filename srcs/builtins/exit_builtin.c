@@ -1,18 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   exit_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:10:29 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/22 23:15:01 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/25 00:32:35 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	builtin_exit(t_shell *shell, char **args)
+static int	too_many_args_error(void)
+{
+	ft_putendl_fd("exit: too many arguments", 2);
+	return (1);
+}
+
+static int	number_error(void)
+{
+	ft_putendl_fd("exit: numeric argument required", 2);
+	return (1);
+}
+
+int	exit_builtin(t_shell *shell, char **args)
 {
 	int		i;
 	char	*arg;
@@ -21,20 +33,14 @@ int	builtin_exit(t_shell *shell, char **args)
 	while (args[i])
 		i++;
 	if (i > 2)
-	{
-		ft_putendl_fd("exit: too many arguments", 2);
-		return (1);
-	}
+		return (too_many_args_error());
 	if (i == 2)
 	{
 		arg = args[1];
 		while (*arg)
 		{
 			if (!ft_isdigit(*arg) && *arg != '-' && *arg != '+')
-			{
-				ft_putendl_fd("exit: numeric argument required", 2);
-				return (1);
-			}
+				return (number_error());
 			arg++;
 		}
 		shell->exit_code = ft_atoi(args[1]);

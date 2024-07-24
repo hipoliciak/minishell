@@ -6,7 +6,7 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/22 22:25:26 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/25 00:39:28 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ t_shell	init_shell(char **env)
 	shell.env = malloc(sizeof(char *) * (i + 1));
 	if (!shell.env)
 		return (shell);
+	shell.env_vars = malloc(sizeof(t_env_var *));
+	if (!shell.env_vars)
+	{
+		free(shell.env);
+		return (shell);
+	}
+	*shell.env_vars = NULL;
 	while (j < i)
 	{
 		shell.env[j] = ft_strdup(env[j]);
@@ -50,6 +57,7 @@ void	free_shell(t_shell *shell)
 	i = 0;
 	while (shell->env[i])
 		free(shell->env[i++]);
+	free_all_env_vars(shell->env_vars);
 	free(shell->env);
 	free(shell->pipe_groups);
 }
@@ -60,7 +68,7 @@ int	run_shell(t_shell *shell)
 
 	(void)shell;
 	signal(SIGINT, sigint_handler);
-	line = (char *) NULL;
+	line = NULL;
 	while (1)
 	{
 		line = ft_read_line(line);
@@ -78,7 +86,7 @@ int	run_shell(t_shell *shell)
 		}
 		else
 			parse_command(shell, line);
-		// free(line); // This line is commented out because it results in a double free error
+		// free(line); // Results in a double free error
 	}
 	return (0);
 }

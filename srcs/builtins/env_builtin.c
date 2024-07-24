@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   env_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/20 23:07:00 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/20 23:07:17 by dmodrzej         ###   ########.fr       */
+/*   Created: 2024/07/20 23:08:49 by dmodrzej          #+#    #+#             */
+/*   Updated: 2024/07/25 00:26:52 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	builtin_pwd(t_shell *shell, char **args)
+int	env_builtin(t_shell *shell)
 {
-	char	*path;
+	t_env_var	*var;
 
-	(void)args;
-	path = getcwd(NULL, 0);
-	if (!path)
-	{
-		perror("pwd");
+	if (!shell || !shell->env_vars)
 		return (1);
+	var = *shell->env_vars;
+	if (!var)
+		return (1);
+	while (var)
+	{
+		print_env_var(var);
+		var = var->next;
 	}
-	ft_putendl_fd(path, 1);
-	free(path);
-	(void)shell;
 	return (0);
 }
