@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/22 01:42:11 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/23 01:30:11 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ typedef struct s_shell
 	int		exit_code;
 	t_group	**pipe_groups;
 }	t_shell;
+
+
+char **tokenize(char *input);
 
 //helpers
 void	ft_free_split(char **split);

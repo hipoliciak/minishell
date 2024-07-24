@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 22:22:09 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/22 02:17:09 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/25 01:45:46 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,113 @@ static void	extract_infile(t_group *group)
 	else
 		perror("Error: parse error near '<'");
 	ft_free_split(split_group);
+}
+
+
+char *char_to_str(char c)
+{
+	char* str = malloc(2 * sizeof(char));
+	if (str == NULL) {
+		return NULL;
+	}
+	str[0] = c;
+	str[1] = '\0';
+	return str;
+}
+
+char *ft_strjoin_char(char *s1, char c)
+{
+	char *c_str;
+	char *new_str;
+
+	c_str = char_to_str(c);
+	if (!c_str)
+		return (NULL);
+	new_str = ft_strjoin(s1, c_str);
+	free(c_str);
+	return (new_str);
+}
+
+char **tokenize(char *input)
+{
+	char **tokens;
+	char *current_token;
+	int in_double_quotes;
+	int in_single_quotes;
+	int i;
+	int t;
+
+	tokens = malloc(sizeof(char *) * (ft_strlen(input) + 1));
+	if (!tokens)
+		return (NULL);
+	current_token = ft_strdup("");
+	in_double_quotes = 0;
+	in_single_quotes = 0;
+	i = 0;
+	t = 0;
+	while (input[i])
+	{
+		if (input[i] == ' ' && !in_double_quotes && !in_single_quotes)
+		{
+			if (*current_token != '\0')
+			{
+				tokens[t++] = current_token;
+				current_token = ft_strdup("");
+			}
+		}
+		else if (input[i] == '"' || input[i] == '\'')
+		{
+			if (input[i] == '"')
+			{
+				if (in_single_quotes)
+					current_token = ft_strjoin_char(current_token, input[i]);
+				else
+				{
+					if (in_double_quotes)
+					{
+						tokens[t++] = current_token;
+						current_token = ft_strdup("");
+					}
+					in_double_quotes = !in_double_quotes;
+				}
+			}
+			else
+			{
+				if (in_double_quotes)
+					current_token = ft_strjoin_char(current_token, input[i]);
+				else
+				{
+					if (in_single_quotes)
+						{
+							tokens[t++] = current_token;
+							current_token = ft_strdup("");
+						}
+					in_single_quotes = !in_single_quotes;
+				}
+			}
+		}
+		else if ((input[i] == '|' || input[i] == '>' || input[i] == '<' || input[i] == ';') && !in_double_quotes && !in_single_quotes)
+		{
+			if (*current_token != '\0')
+			{
+				tokens[t++] = current_token;
+				current_token = ft_strdup("");
+			}
+			if (ft_isprint(input[i]))
+				tokens[t++] = char_to_str(input[i]);
+		}
+		else
+			current_token = ft_strjoin_char(current_token, input[i]);
+		i++;
+	}
+	if (*current_token != '\0')
+		tokens[t++] = current_token;
+	tokens[t] = NULL;
+	if (in_double_quotes || in_single_quotes)
+	{
+		ft_free_split(tokens);
+		tokens = NULL;
+		perror("Error: unclosed quotes");
+	}
+	return (tokens);
 }
