@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/25 12:59:34 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/25 14:57:39 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,16 @@
 # include <string.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
+// Lexer
+typedef struct s_tokenizer
+{
+	char	**tokens;
+	int		index;
+	char	*token;
+	int		in_double_q;
+	int		in_single_q;
+}	t_tokenizer;
 
 typedef struct s_group
 {
