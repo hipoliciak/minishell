@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   unset_builtin.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/20 23:07:00 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/20 23:07:17 by dmodrzej         ###   ########.fr       */
+/*   Created: 2024/07/20 23:14:08 by dmodrzej          #+#    #+#             */
+/*   Updated: 2024/07/24 23:55:01 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	builtin_pwd(t_shell *shell, char **args)
+int	unset_builtin(t_shell *shell, char **args)
 {
-	char	*path;
+	int	i;
 
-	(void)args;
-	path = getcwd(NULL, 0);
-	if (!path)
-	{
-		perror("pwd");
+	if (!shell || !shell->env_vars || !args)
 		return (1);
+	i = 1;
+	while (args[i])
+	{
+		if (get_env_var(shell, args[i]))
+			remove_env_var(shell, args[i]);
+		i++;
 	}
-	ft_putendl_fd(path, 1);
-	free(path);
-	(void)shell;
 	return (0);
 }
