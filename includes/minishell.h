@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/25 02:34:00 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/25 12:59:34 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ char	**tokenize(char *input);
 
 //helpers
 void	ft_free_split(char **split);
+char	*ft_strjoin_char(char *s1, char c);
+char	*char_to_str(char c);
 
 // groups.c
 t_group	**group_input(char *line);
