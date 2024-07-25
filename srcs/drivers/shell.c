@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/26 01:11:06 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/26 01:27:50 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	print_tokens(char **tokens);
 t_shell	*init_shell(void)
 {
 	t_shell	*shell;
+	char	*cwd;
 
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
@@ -31,8 +32,13 @@ t_shell	*init_shell(void)
 	*shell->env_vars = NULL;
 	shell->last_exit_code = 0;
 	shell->pipe_groups = NULL;
+	cwd = getcwd(NULL, 0);
+	if (cwd)
+	{
+		set_env_var(shell, "PWD", cwd);
+		free(cwd);
+	}
 	set_env_var(shell, "HOME", getenv("HOME"));
-	set_env_var(shell, "PWD", getcwd(NULL, 0));
 	set_env_var(shell, "USER", getenv("USER"));
 	return (shell);
 }
@@ -48,6 +54,7 @@ void	free_shell(t_shell *shell)
 	}
 	if (shell->pipe_groups)
 		free_groups(shell->pipe_groups);
+	free(shell);
 }
 
 int	run_shell(t_shell *shell)
@@ -70,11 +77,9 @@ int	run_shell(t_shell *shell)
 		tokens = tokenize(line);
 		if (tokens)
 		{
-			print_tokens(tokens);
+			exec_builtins(shell, tokens);
 			ft_free_split(tokens);
 		}
-		else
-			parse_command(shell, line);
 	}
 	return (0);
 }
