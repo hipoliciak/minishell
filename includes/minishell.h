@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/26 01:04:23 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/26 01:13:23 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_shell
 }	t_shell;
 
 // tokenizer
-char	**tokenize(char *input);
+char		**tokenize(char *input);
 
 // env
 t_env_var	*new_env_var(char *key, char *value);
@@ -93,8 +93,8 @@ void		print_groups(t_group **groups);
 void		free_groups(t_group **groups);
 
 // helpers
-void	ft_free_split(char **split);
-char	*ft_strjoin_char(char *s1, char c);
-char	*char_to_str(char c);
+void		ft_free_split(char **split);
+char		*ft_strjoin_char(char *s1, char c);
+char		*char_to_str(char c);
 
 #endif
