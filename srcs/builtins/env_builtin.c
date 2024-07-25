@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   env_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:08:49 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/20 23:09:08 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/25 23:15:00 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	builtin_env(t_shell *shell, char **args)
+int	env_builtin(t_shell *shell)
 {
-	int	i;
+	t_env_var	*var;
 
-	i = 0;
-	while (shell->env[i])
+	if (!shell)
+		return (1);
+	var = *shell->env_vars;
+	if (!var)
+		return (1);
+	while (var)
 	{
-		ft_putendl_fd(shell->env[i], 1);
-		i++;
+		print_env_var(var);
+		var = var->next;
 	}
-	(void)args;
 	return (0);
 }
