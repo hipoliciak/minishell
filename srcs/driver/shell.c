@@ -6,13 +6,14 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/25 01:49:55 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/25 02:38:04 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 void	free_groups(t_group **groups);
+void	print_tokens(char **tokens);
 
 t_shell	init_shell(char **env)
 {
@@ -56,7 +57,7 @@ void	free_shell(t_shell *shell)
 int	run_shell(t_shell *shell)
 {
 	char	*line;
-	char **tokens;
+	char	**tokens;
 
 	(void)shell;
 	signal(SIGINT, sigint_handler);
@@ -70,18 +71,19 @@ int	run_shell(t_shell *shell)
 			rl_clear_history();
 			break ;
 		}
-		shell->pipe_groups = group_input(line);
 		tokens = tokenize(line);
-		if (tokens != NULL)
-		{
-			while (*tokens)
-			{
-				printf("%s\n", *tokens);
-				tokens++;
-			}
-		}
-		//print_groups(shell->pipe_groups);
-		free_groups(shell->pipe_groups);
+		if (!tokens)
+			continue ;
+		print_tokens(tokens);
 	}
 	return (0);
+}
+
+void	print_tokens(char **tokens)
+{
+	while (*tokens)
+	{
+		printf("%s\n", *tokens);
+		tokens++;
+	}
 }

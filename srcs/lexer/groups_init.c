@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 22:22:09 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/25 01:45:46 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/25 02:42:44 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,22 @@ static void	extract_infile(t_group *group)
 	ft_free_split(split_group);
 }
 
-
-char *char_to_str(char c)
+char	*char_to_str(char c)
 {
-	char* str = malloc(2 * sizeof(char));
-	if (str == NULL) {
-		return NULL;
-	}
+	char	*str;
+
+	str = malloc(sizeof(char) * 2);
+	if (str == NULL)
+		return (NULL);
 	str[0] = c;
 	str[1] = '\0';
-	return str;
+	return (str);
 }
 
-char *ft_strjoin_char(char *s1, char c)
+char	*ft_strjoin_char(char *s1, char c)
 {
-	char *c_str;
-	char *new_str;
+	char	*c_str;
+	char	*new_str;
 
 	c_str = char_to_str(c);
 	if (!c_str)
@@ -112,14 +112,14 @@ char *ft_strjoin_char(char *s1, char c)
 	return (new_str);
 }
 
-char **tokenize(char *input)
+char	**tokenize(char *input)
 {
-	char **tokens;
-	char *current_token;
-	int in_double_quotes;
-	int in_single_quotes;
-	int i;
-	int t;
+	char	**tokens;
+	char	*current_token;
+	int		in_double_quotes;
+	int		in_single_quotes;
+	int		i;
+	int		t;
 
 	tokens = malloc(sizeof(char *) * (ft_strlen(input) + 1));
 	if (!tokens)
@@ -162,10 +162,10 @@ char **tokenize(char *input)
 				else
 				{
 					if (in_single_quotes)
-						{
-							tokens[t++] = current_token;
-							current_token = ft_strdup("");
-						}
+					{
+						tokens[t++] = current_token;
+						current_token = ft_strdup("");
+					}
 					in_single_quotes = !in_single_quotes;
 				}
 			}
