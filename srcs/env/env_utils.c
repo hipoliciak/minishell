@@ -6,7 +6,7 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:08:33 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/25 00:40:11 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/25 22:44:38 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	add_env_var(t_env_var **env_vars, t_env_var *new)
 {
 	t_env_var	*last;
 
-	if (!new)
+	if (!env_vars || !new)
 		return ;
 	if (!*env_vars)
 	{
@@ -66,16 +66,22 @@ void	free_env_var(t_env_var *var)
 		return ;
 	free(var->key);
 	free(var->value);
-	free_env_var(var->next);
 	free(var);
 }
 
 void	free_all_env_vars(t_env_var **env_vars)
 {
-	while (*env_vars)
+	t_env_var	*current;
+	t_env_var	*next;
+
+	if (!env_vars || !*env_vars)
+		return ;
+	current = *env_vars;
+	while (current)
 	{
-		free_env_var(*env_vars);
-		*env_vars = (*env_vars)->next;
+		next = current->next;
+		free_env_var(current);
+		current = next;
 	}
-	free(*env_vars);
+	*env_vars = NULL;
 }

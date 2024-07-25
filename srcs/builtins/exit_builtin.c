@@ -6,7 +6,7 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:10:29 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/25 00:32:35 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/26 00:07:37 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ int	exit_builtin(t_shell *shell, char **args)
 				return (number_error());
 			arg++;
 		}
-		shell->exit_code = ft_atoi(args[1]);
+		shell->last_exit_code = ft_atoi(args[1]);
 	}
 	else
-		shell->exit_code = 0;
+		shell->last_exit_code = 0;
 	free_shell(shell);
-	exit(shell->exit_code);
+	exit(shell->last_exit_code);
 	return (2);
 }

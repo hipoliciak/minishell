@@ -6,11 +6,18 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:12:33 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/25 00:28:31 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/25 23:37:05 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	free_key_value_pair(char **key_value_pair)
+{
+	free(key_value_pair[0]);
+	free(key_value_pair[1]);
+	free(key_value_pair);
+}
 
 static char	is_valid_key(char *key)
 {
@@ -41,6 +48,11 @@ static char	**get_key_value_pair(char *arg)
 	key_value_pair[0] = ft_substr(arg, 0, eq_sign_pos - arg);
 	key_value_pair[1] = ft_substr(eq_sign_pos + 1, 0, ft_strlen(eq_sign_pos));
 	key_value_pair[2] = NULL;
+	if (!key_value_pair[0] || !key_value_pair[1])
+	{
+		free_key_value_pair(key_value_pair);
+		return (NULL);
+	}
 	return (key_value_pair);
 }
 
@@ -55,15 +67,19 @@ int	export_builtin(t_shell *shell, char **args)
 		if (!is_valid_key(args[i]))
 		{
 			printf("export: `%s' is not a valid identifier\n", args[i]);
+			ft_free_split(args);
 			return (1);
 		}
-		key_value_pair = get_key_value_pair(args[i]);
-		if (!key_value_pair)
-			return (1);
-		set_env_var(shell, key_value_pair[0], key_value_pair[1]);
-		free(key_value_pair[0]);
-		free(key_value_pair[1]);
-		free(key_value_pair);
+		else if (ft_strchr(args[i], '=') != NULL)
+		{
+			key_value_pair = get_key_value_pair(args[i]);
+			if (!key_value_pair)
+				return (1);
+			set_env_var(shell, key_value_pair[0], key_value_pair[1]);
+			free_key_value_pair(key_value_pair);
+		}
+		else
+			set_env_var(shell, args[i], "");
 		i++;
 	}
 	return (0);

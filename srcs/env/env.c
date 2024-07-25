@@ -6,7 +6,7 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:15:47 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/24 23:56:44 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/25 23:25:46 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@ int	set_env_var(t_shell *shell, char *key, char *value)
 {
 	t_env_var	*new;
 
-	if (!shell || !shell->env_vars || !key || !value)
+	if (!shell || !key || !value)
 		return (1);
 	new = new_env_var(key, value);
 	if (!new)
 		return (1);
+	if (get_env_var(shell, key))
+		remove_env_var(shell, key);
 	add_env_var(shell->env_vars, new);
 	return (0);
 }

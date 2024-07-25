@@ -6,7 +6,7 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:02:48 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/24 23:20:23 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/26 00:04:55 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static int	path_error(char *path)
 {
 	ft_putstr_fd("cd: ", 2);
 	perror(path);
-	free(path);
+	if (path)
+		free(path);
 	return (1);
 }
 
@@ -43,7 +44,11 @@ int	cd_builtin(t_shell *shell, char **args)
 			return (home_error());
 	}
 	else
+	{
 		path = ft_strdup(args[1]);
+		if (!path)
+			return (1);
+	}
 	if (chdir(path) == -1)
 		return (path_error(path));
 	free(path);
