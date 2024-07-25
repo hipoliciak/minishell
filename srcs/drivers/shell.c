@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-<<<<<<< HEAD:srcs/driver/shell.c
-/*   Updated: 2024/07/25 15:33:50 by dkolida          ###   ########.fr       */
-=======
-/*   Updated: 2024/07/26 00:11:30 by dmodrzej         ###   ########.fr       */
->>>>>>> main:srcs/drivers/shell.c
+/*   Updated: 2024/07/26 01:11:06 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +39,6 @@ t_shell	*init_shell(void)
 
 void	free_shell(t_shell *shell)
 {
-<<<<<<< HEAD:srcs/driver/shell.c
-	int	i;
-
-	i = 0;
-	while (shell->env[i])
-		free(shell->env[i++]);
-	free(shell->env);
-=======
 	if (!shell)
 		return ;
 	if (shell->env_vars)
@@ -60,7 +48,6 @@ void	free_shell(t_shell *shell)
 	}
 	if (shell->pipe_groups)
 		free_groups(shell->pipe_groups);
->>>>>>> main:srcs/drivers/shell.c
 }
 
 int	run_shell(t_shell *shell)
@@ -80,23 +67,14 @@ int	run_shell(t_shell *shell)
 			rl_clear_history();
 			break ;
 		}
-<<<<<<< HEAD:srcs/driver/shell.c
 		tokens = tokenize(line);
 		if (tokens)
 		{
 			print_tokens(tokens);
 			ft_free_split(tokens);
 		}
-=======
-		if (ft_strchr(line, '|'))
-		{
-			shell->pipe_groups = group_input(line);
-			print_groups(shell->pipe_groups);
-			free_groups(shell->pipe_groups);
-		}
 		else
 			parse_command(shell, line);
->>>>>>> main:srcs/drivers/shell.c
 	}
 	return (0);
 }
