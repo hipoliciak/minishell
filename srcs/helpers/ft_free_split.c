@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 01:32:03 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/22 01:32:11 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/25 15:54:09 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,5 @@ void	ft_free_split(char **split)
 		i++;
 	}
 	free(split);
+	split = NULL;
 }

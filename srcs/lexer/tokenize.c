@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:53:46 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/25 15:48:00 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/25 16:38:11 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,14 @@ char	**tokenize(char *input)
 {
 	t_tokenizer	*data;
 	int			i;
-	char **tokens;
+	char		**tokens;
 
 	data = init_tokenizer_data(ft_strlen(input));
 	if (!data)
 		return (NULL);
 	i = 0;
 	while (input[i])
-	{
-		if (ft_strchr("|><; '\"", input[i]))
-			handle_spesials(input[i], data);
-		else
-			data->token = ft_strjoin_char(data->token, input[i]);
-		i++;
-	}
+		handle_spesials(input[i++], data);
 	if (*(data->token) != '\0')
 		data->tokens[data->index++] = data->token;
 	else
@@ -43,8 +37,8 @@ char	**tokenize(char *input)
 	if (data->in_double_q || data->in_single_q)
 	{
 		ft_free_split(data->tokens);
-		data->tokens = NULL;
 		perror("Error: unclosed quotes");
+		return (NULL);
 	}
 	tokens = data->tokens;
 	free(data);
@@ -79,25 +73,24 @@ t_tokenizer	*init_tokenizer_data(int token_count)
 
 static void	handle_spesials(char c, t_tokenizer *data)
 {
-	if (c == ' ' && !data->in_double_q && !data->in_single_q)
+	if (ft_strchr("|><; '\"", c))
 	{
-		if (*(data->token) != '\0')
+		if (c == '"' || c == '\'')
+			handle_quotes(c, data);
+		else if (ft_strchr("|><; ", c)
+			&& !data->in_double_q
+			&& !data->in_single_q)
 		{
-			data->tokens[data->index++] = data->token;
-			data->token = ft_strdup("");
+			if (*(data->token) != '\0')
+			{
+				data->tokens[data->index++] = data->token;
+				data->token = ft_strdup("");
+			}
+			if (ft_isprint(c) && c > ' ')
+				data->tokens[data->index++] = char_to_str(c);
 		}
-	}
-	else if (c == '"' || c == '\'')
-		handle_quotes(c, data);
-	else if (ft_strchr("|><;", c) && !data->in_double_q && !data->in_single_q)
-	{
-		if (*(data->token) != '\0')
-		{
-			data->tokens[data->index++] = data->token;
-			data->token = ft_strdup("");
-		}
-		if (ft_isprint(c))
-			data->tokens[data->index++] = char_to_str(c);
+		else
+			data->token = ft_strjoin_char(data->token, c);
 	}
 	else
 		data->token = ft_strjoin_char(data->token, c);
