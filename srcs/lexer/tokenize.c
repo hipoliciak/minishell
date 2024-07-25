@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:53:46 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/25 15:22:27 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/25 15:48:00 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,11 @@ char	**tokenize(char *input)
 {
 	t_tokenizer	*data;
 	int			i;
+	char **tokens;
 
 	data = init_tokenizer_data(ft_strlen(input));
+	if (!data)
+		return (NULL);
 	i = 0;
 	while (input[i])
 	{
@@ -34,6 +37,8 @@ char	**tokenize(char *input)
 	}
 	if (*(data->token) != '\0')
 		data->tokens[data->index++] = data->token;
+	else
+		free(data->token);
 	data->tokens[data->index] = NULL;
 	if (data->in_double_q || data->in_single_q)
 	{
@@ -41,7 +46,9 @@ char	**tokenize(char *input)
 		data->tokens = NULL;
 		perror("Error: unclosed quotes");
 	}
-	return (data->tokens);
+	tokens = data->tokens;
+	free(data);
+	return (tokens);
 }
 
 t_tokenizer	*init_tokenizer_data(int token_count)

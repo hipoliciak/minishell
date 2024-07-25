@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/25 02:38:04 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/25 15:33:50 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,11 @@ int	run_shell(t_shell *shell)
 			break ;
 		}
 		tokens = tokenize(line);
-		if (!tokens)
-			continue ;
-		print_tokens(tokens);
+		if (tokens)
+		{
+			print_tokens(tokens);
+			ft_free_split(tokens);
+		}
 	}
 	return (0);
 }
