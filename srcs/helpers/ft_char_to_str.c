@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command.c                                          :+:      :+:    :+:   */
+/*   ft_char_to_str.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/22 21:40:50 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/25 23:32:44 by dmodrzej         ###   ########.fr       */
+/*   Created: 2024/07/25 12:56:16 by dkolida           #+#    #+#             */
+/*   Updated: 2024/07/25 12:56:34 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	parse_command(t_shell *shell, char *line)
+char	*char_to_str(char c)
 {
-	char	**args;
+	char	*str;
 
-	args = ft_split(line, ' ');
-	if (!args)
-		return (1);
-	if (!args[0])
-	{
-		ft_free_split(args);
-		return (0);
-	}
-	exec_builtins(shell, args);
-	ft_free_split(args);
-	return (0);
+	str = malloc(sizeof(char) * 2);
+	if (str == NULL)
+		return (NULL);
+	str[0] = c;
+	str[1] = '\0';
+	return (str);
 }

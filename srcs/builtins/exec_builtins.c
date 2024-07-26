@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:04:36 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/25 23:08:30 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/26 01:33:20 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,6 @@ int	exec_builtins(t_shell *shell, char **args)
 	else if (!ft_strcmp(args[0], "pwd"))
 		return (pwd_builtin(shell));
 	else
-	{
 		printf("minishell: %s: command not found\n", args[0]);
-		free_shell(shell);
-		exit(127);
-	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/26 00:06:50 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/26 01:13:23 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,16 @@ typedef struct s_env_var
 	struct s_env_var	*next;
 }	t_env_var;
 
+// Lexer
+typedef struct s_tokenizer
+{
+	char	**tokens;
+	int		index;
+	char	*token;
+	int		in_double_q;
+	int		in_single_q;
+}	t_tokenizer;
+
 typedef struct s_group
 {
 	char	*str;
@@ -42,6 +52,9 @@ typedef struct s_shell
 	int			last_exit_code;
 	t_group		**pipe_groups;
 }	t_shell;
+
+// tokenizer
+char		**tokenize(char *input);
 
 // env
 t_env_var	*new_env_var(char *key, char *value);
@@ -81,5 +94,7 @@ void		free_groups(t_group **groups);
 
 // helpers
 void		ft_free_split(char **split);
+char		*ft_strjoin_char(char *s1, char c);
+char		*char_to_str(char c);
 
 #endif

@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_split.c                                    :+:      :+:    :+:   */
+/*   ft_strjoin_char.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/22 01:32:03 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/25 15:54:09 by dkolida          ###   ########.fr       */
+/*   Created: 2024/07/25 12:55:27 by dkolida           #+#    #+#             */
+/*   Updated: 2024/07/25 15:29:45 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_free_split(char **split)
+char	*ft_strjoin_char(char *s1, char c)
 {
-	int	i;
+	char	*c_str;
+	char	*new_str;
 
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-	split = NULL;
+	c_str = char_to_str(c);
+	if (!c_str)
+		return (NULL);
+	new_str = ft_strjoin(s1, c_str);
+	free(c_str);
+	free(s1);
+	return (new_str);
 }
