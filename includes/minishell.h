@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/26 01:13:23 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/28 00:31:39 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_tokenizer
 	char	*token;
 	int		in_double_q;
 	int		in_single_q;
+	int		*not_interpolate;
 }	t_tokenizer;
 
 typedef struct s_group
@@ -54,7 +55,8 @@ typedef struct s_shell
 }	t_shell;
 
 // tokenizer
-char		**tokenize(char *input);
+t_tokenizer	*tokenizer_create(char *input);
+int			free_tokenizer(t_tokenizer *tokenizer);
 
 // env
 t_env_var	*new_env_var(char *key, char *value);
