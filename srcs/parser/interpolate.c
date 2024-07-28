@@ -6,13 +6,13 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 01:47:26 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/28 04:26:48 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/28 04:49:57 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenize.h"
 
-char	*data_str(char *str, int *i, t_shell *shell);
+static char	*data_str(char *str, int *i, t_shell *shell);
 
 static char	*get_var_name(char *str)
 {
@@ -30,7 +30,6 @@ static char	*get_var_name(char *str)
 
 static char	*handle_dollars(t_shell *shell, char *str)
 {
-	char	*var_name;
 	char	*new_str;
 	int		i;
 	char	*tmp;
@@ -85,6 +84,8 @@ static char	*data_str(char *str, int *i, t_shell *shell)
 		var_name = get_var_name(&str[*i]);
 		*i += ft_strlen(var_name);
 		tmp = ft_strdup(get_env_var(shell, var_name));
+		if (!tmp)
+			tmp = ft_strdup("$");
 		free(var_name);
 	}
 	return (tmp);
