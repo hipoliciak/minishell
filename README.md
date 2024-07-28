@@ -4,9 +4,9 @@
 - [X] Display a prompt when waiting for a new command.
 - [X] history
 - [ ] Search and launch the right executable (based on the PATH variable or using a relative or an absolute path).
-- [ ] Handle ’ (single quote) which should prevent the shell from interpreting the meta-
+- [X] Handle ’ (single quote) which should prevent the shell from interpreting the meta-
 characters in the quoted sequence.
-- [ ] Handle " (double quote) which should prevent the shell from interpreting the meta- characters in the quoted sequence except for $ (dollar sign).
+- [X] Handle " (double quote) which should prevent the shell from interpreting the meta- characters in the quoted sequence except for $ (dollar sign).
 - [ ] Implement redirections:
 	- [ ] < should redirect input.
 	- [ ] > should redirect output.
