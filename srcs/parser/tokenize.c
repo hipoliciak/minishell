@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:53:46 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/28 01:22:29 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/28 03:37:53 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@ static void	handle_spesials(char c, t_tokenizer *data);
 static void	handle_quotes(char c, t_tokenizer *data);
 static void	handle_quote(t_tokenizer *data, char c, int *other_q, int *this_q);
 
-t_tokenizer	*tokenizer_create(char *input)
+char	**get_tokens(t_shell *shell, char *input)
 {
 	t_tokenizer	*data;
 	int			i;
+	char		**tokens;
 
 	data = tokenizer_init(ft_strlen(input));
 	if (!data)
@@ -35,7 +36,11 @@ t_tokenizer	*tokenizer_create(char *input)
 	data->tokens[data->index] = NULL;
 	if ((data->in_double_q || data->in_single_q) && free_tokenizer(data))
 		perror("Error: unclosed quotes");
-	return (data);
+	interpolate(shell, data);
+	tokens = data->tokens;
+	data->tokens = NULL;
+	free_tokenizer(data);
+	return (tokens);
 }
 
 static void	handle_spesials(char c, t_tokenizer *data)

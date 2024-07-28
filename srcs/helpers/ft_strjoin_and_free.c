@@ -1,32 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize.h                                         :+:      :+:    :+:   */
+/*   ft_strjoin_and_free.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/27 23:55:18 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/28 03:32:51 by dkolida          ###   ########.fr       */
+/*   Created: 2024/07/28 04:02:33 by dkolida           #+#    #+#             */
+/*   Updated: 2024/07/28 04:14:23 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TOKENIZE_H
-# define TOKENIZE_H
+#include "minishell.h"
 
-# include "minishell.h"
-
-typedef struct s_tokenizer
+char	*ft_strjoin_and_free(char *str1, char *str2)
 {
-	char	**tokens;
-	int		index;
-	char	*token;
-	int		in_double_q;
-	int		in_single_q;
-	int		*not_interpolate;
-}	t_tokenizer;
+	char	*new_str;
 
-t_tokenizer	*tokenizer_init(int token_count);
-int			free_tokenizer(t_tokenizer *tokenizer);
-void		interpolate(t_shell *shell, t_tokenizer *data);
-
-#endif
+	if (!str1 && str2)
+		return (str2);
+	if (!str2 && str1)
+		return (str1);
+	new_str = ft_strjoin(str1, str2);
+	free(str1);
+	free(str2);
+	return (new_str);
+}

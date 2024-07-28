@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/28 01:26:34 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/28 03:41:57 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ void	free_shell(t_shell *shell)
 
 int	run_shell(t_shell *shell)
 {
-	char		*line;
-	t_tokenizer	*tokenizer_data;
+	char	*line;
+	char	**tokens;
 
 	(void)shell;
 	signal(SIGINT, sigint_handler);
@@ -75,25 +75,25 @@ int	run_shell(t_shell *shell)
 			break ;
 		}
 		if (*line == '\0')
-		{
-			free(line);
 			continue ;
-		}
-		tokenizer_data = tokenizer_create(line);
-		if (tokenizer_data)
+		tokens = get_tokens(shell, line);
+		if (tokens)
 		{
-			exec_builtins(shell, tokenizer_data->tokens);
-			free_tokenizer(tokenizer_data);
+			exec_builtins(shell, tokens);
+			ft_free_split(tokens);
 		}
 	}
 	return (0);
 }
 
-void	print_tokens(char **tokens)
+void	print_tokens(char **token)
 {
-	while (*tokens)
+	int	i;
+
+	i = 0;
+	while (token[i])
 	{
-		printf("%s\n", *tokens);
-		tokens++;
+		printf("%s\n", token[i]);
+		i++;
 	}
 }
