@@ -1,39 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo_builtin.c                                     :+:      :+:    :+:   */
+/*   tokenize.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/20 22:55:21 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/28 03:22:04 by dkolida          ###   ########.fr       */
+/*   Created: 2024/07/27 23:55:18 by dkolida           #+#    #+#             */
+/*   Updated: 2024/07/28 03:32:51 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef TOKENIZE_H
+# define TOKENIZE_H
 
-int	echo_builtin(t_shell *shell, char **args)
+# include "minishell.h"
+
+typedef struct s_tokenizer
 {
-	int	i;
-	int	nl;
+	char	**tokens;
+	int		index;
+	char	*token;
+	int		in_double_q;
+	int		in_single_q;
+	int		*not_interpolate;
+}	t_tokenizer;
 
-	i = 1;
-	nl = 1;
-	if (args[i] && !ft_strcmp(args[i], "-n"))
-	{
-		nl = 0;
-		i++;
-	}
-	while (args[i])
-	{
-		ft_putstr_fd(args[i], STDOUT_FILENO);
-		if (args[i + 1])
-			ft_putstr_fd(" ", STDOUT_FILENO);
-		i++;
-	}
-	if (nl)
-		ft_putstr_fd("\n", STDOUT_FILENO);
-	(void)shell;
-	shell->last_exit_code = 0;
-	return (0);
-}
+t_tokenizer	*tokenizer_init(int token_count);
+int			free_tokenizer(t_tokenizer *tokenizer);
+void		interpolate(t_shell *shell, t_tokenizer *data);
+
+#endif

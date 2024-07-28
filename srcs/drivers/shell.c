@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/26 01:27:50 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/28 03:41:57 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,9 @@ int	run_shell(t_shell *shell)
 			rl_clear_history();
 			break ;
 		}
-		tokens = tokenize(line);
+		if (*line == '\0')
+			continue ;
+		tokens = get_tokens(shell, line);
 		if (tokens)
 		{
 			exec_builtins(shell, tokens);
@@ -84,11 +86,14 @@ int	run_shell(t_shell *shell)
 	return (0);
 }
 
-void	print_tokens(char **tokens)
+void	print_tokens(char **token)
 {
-	while (*tokens)
+	int	i;
+
+	i = 0;
+	while (token[i])
 	{
-		printf("%s\n", *tokens);
-		tokens++;
+		printf("%s\n", token[i]);
+		i++;
 	}
 }

@@ -1,39 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo_builtin.c                                     :+:      :+:    :+:   */
+/*   tokenize_free.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/20 22:55:21 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/28 03:22:04 by dkolida          ###   ########.fr       */
+/*   Created: 2024/07/27 23:51:40 by dkolida           #+#    #+#             */
+/*   Updated: 2024/07/28 02:45:45 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "tokenize.h"
 
-int	echo_builtin(t_shell *shell, char **args)
+int	free_tokenizer(t_tokenizer *tokenizer)
 {
-	int	i;
-	int	nl;
-
-	i = 1;
-	nl = 1;
-	if (args[i] && !ft_strcmp(args[i], "-n"))
-	{
-		nl = 0;
-		i++;
-	}
-	while (args[i])
-	{
-		ft_putstr_fd(args[i], STDOUT_FILENO);
-		if (args[i + 1])
-			ft_putstr_fd(" ", STDOUT_FILENO);
-		i++;
-	}
-	if (nl)
-		ft_putstr_fd("\n", STDOUT_FILENO);
-	(void)shell;
-	shell->last_exit_code = 0;
-	return (0);
+	if (!tokenizer)
+		return (1);
+	if (tokenizer->tokens != NULL)
+		ft_free_split(tokenizer->tokens);
+	if (tokenizer->not_interpolate != NULL)
+		free(tokenizer->not_interpolate);
+	if (tokenizer->token != NULL)
+		free(tokenizer->token);
+	free(tokenizer);
+	tokenizer = NULL;
+	return (1);
 }

@@ -1,39 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo_builtin.c                                     :+:      :+:    :+:   */
+/*   ft_strjoin_and_free.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/20 22:55:21 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/28 03:22:04 by dkolida          ###   ########.fr       */
+/*   Created: 2024/07/28 04:02:33 by dkolida           #+#    #+#             */
+/*   Updated: 2024/07/28 04:14:23 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	echo_builtin(t_shell *shell, char **args)
+char	*ft_strjoin_and_free(char *str1, char *str2)
 {
-	int	i;
-	int	nl;
+	char	*new_str;
 
-	i = 1;
-	nl = 1;
-	if (args[i] && !ft_strcmp(args[i], "-n"))
-	{
-		nl = 0;
-		i++;
-	}
-	while (args[i])
-	{
-		ft_putstr_fd(args[i], STDOUT_FILENO);
-		if (args[i + 1])
-			ft_putstr_fd(" ", STDOUT_FILENO);
-		i++;
-	}
-	if (nl)
-		ft_putstr_fd("\n", STDOUT_FILENO);
-	(void)shell;
-	shell->last_exit_code = 0;
-	return (0);
+	if (!str1 && str2)
+		return (str2);
+	if (!str2 && str1)
+		return (str1);
+	new_str = ft_strjoin(str1, str2);
+	free(str1);
+	free(str2);
+	return (new_str);
 }
