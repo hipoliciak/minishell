@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execve.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 22:35:37 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/31 23:53:54 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/08/01 15:33:36 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	execve_path(t_shell *shell, char **args)
 {
 	char	*full_path;
 	int		status;
-	__pid_t	pid;
+	int		pid;
 
 	full_path = set_path(shell, args);
 	if (!full_path)
