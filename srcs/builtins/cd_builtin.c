@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:02:48 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/31 23:32:09 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/08/01 15:45:44 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	cd_builtin(t_shell *shell, char **args)
 {
 	char	*path;
 
+	path = "";
 	if (args[2])
 		return (arg_error(shell));
 	else if (!args[1] || args[1][0] == '~')
