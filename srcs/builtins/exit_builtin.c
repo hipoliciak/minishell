@@ -6,21 +6,23 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:10:29 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/26 00:07:37 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/31 23:27:58 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	too_many_args_error(void)
+static int	too_many_args_error(t_shell *shell)
 {
 	ft_putendl_fd("exit: too many arguments", 2);
+	shell->last_exit_code = 1;
 	return (1);
 }
 
-static int	number_error(void)
+static int	number_error(t_shell *shell)
 {
 	ft_putendl_fd("exit: numeric argument required", 2);
+	shell->last_exit_code = 2;
 	return (1);
 }
 
@@ -33,21 +35,20 @@ int	exit_builtin(t_shell *shell, char **args)
 	while (args[i])
 		i++;
 	if (i > 2)
-		return (too_many_args_error());
+		return (too_many_args_error(shell));
 	if (i == 2)
 	{
 		arg = args[1];
 		while (*arg)
 		{
 			if (!ft_isdigit(*arg) && *arg != '-' && *arg != '+')
-				return (number_error());
+				return (number_error(shell));
 			arg++;
 		}
 		shell->last_exit_code = ft_atoi(args[1]);
 	}
 	else
 		shell->last_exit_code = 0;
-	free_shell(shell);
 	exit(shell->last_exit_code);
 	return (2);
 }

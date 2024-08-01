@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/01 14:54:31 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/01 16:01:29 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	shell_exec(t_shell *shell, char *line);
 t_shell	*init_shell(void)
 {
 	t_shell	*shell;
-	char	*cwd;
 
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
@@ -30,16 +29,8 @@ t_shell	*init_shell(void)
 	}
 	*shell->env_vars = NULL;
 	shell->last_exit_code = 0;
-	shell->group_i = 0;
-	shell->groups = NULL;
-	cwd = getcwd(NULL, 0);
-	if (cwd)
-	{
-		set_env_var(shell, "PWD", cwd);
-		free(cwd);
-	}
-	set_env_var(shell, "HOME", getenv("HOME"));
-	set_env_var(shell, "USER", getenv("USER"));
+	set_shell_env_vars(shell);
+	shell->env = env_vars_to_env(shell->env_vars);
 	return (shell);
 }
 
@@ -47,6 +38,8 @@ void	free_shell(t_shell *shell)
 {
 	if (!shell)
 		return ;
+	if (shell->env)
+		ft_free_split(shell->env);
 	if (shell->env_vars)
 	{
 		free_all_env_vars(shell->env_vars);
@@ -91,7 +84,7 @@ void	shell_exec(t_shell *shell, char *line)
 		i = 0;
 		while (shell->groups[i])
 		{
-			exec_builtins(shell, shell->groups[i]->args);
+			exec_command(shell, shell->groups[i]->args);
 			i++;
 		}
 		ft_free_split(tokens);

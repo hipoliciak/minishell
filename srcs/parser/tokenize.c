@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:53:46 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/28 03:37:53 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/31 22:52:31 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,11 @@ static void	handle_quote(t_tokenizer *data, char c, int *other_q, int *this_q)
 	{
 		if (*this_q)
 		{
-			data->tokens[data->index] = data->token;
 			if (c == '\'')
 				data->not_interpolate[data->index] = 1;
-			data->index++;
-			data->token = ft_strdup("");
+			*this_q = 0;
 		}
-		*this_q = !*this_q;
+		else
+			*this_q = 1;
 	}
 }
