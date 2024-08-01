@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:55:21 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/28 03:22:04 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/01 13:30:45 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	echo_builtin(t_shell *shell, char **args)
 	}
 	if (nl)
 		ft_putstr_fd("\n", STDOUT_FILENO);
-	(void)shell;
 	shell->last_exit_code = 0;
 	return (0);
 }

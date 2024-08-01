@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/28 04:03:12 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/07/29 00:43:03 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ typedef struct s_env_var
 
 typedef struct s_group
 {
-	char	*str;
+	char	**args;
 	char	*in_file_name;
 	char	*out_file_name;
+	int		arg_i;
 }	t_group;
 
 typedef struct s_shell
@@ -40,7 +41,8 @@ typedef struct s_shell
 	// char		**env;
 	t_env_var	**env_vars;
 	int			last_exit_code;
-	t_group		**pipe_groups;
+	t_group		**groups;
+	int			group_i;
 }	t_shell;
 
 // tokenizer
@@ -78,7 +80,7 @@ void		free_shell(t_shell *shell);
 void		sigint_handler(int sig_num);
 
 // lexer
-t_group		**group_input(char *line);
+void		group_input(t_shell *shell, char **tokens);
 void		print_groups(t_group **groups);
 void		free_groups(t_group **groups);
 
