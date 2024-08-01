@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_command.c                                     :+:      :+:    :+:   */
+/*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:04:36 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/01 00:27:03 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/26 01:33:20 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_command(t_shell *shell, char **args)
+int	exec_builtins(t_shell *shell, char **args)
 {
 	if (!ft_strcmp(args[0], "echo"))
 		return (echo_builtin(shell, args));
@@ -28,10 +28,7 @@ int	exec_command(t_shell *shell, char **args)
 		return (exit_builtin(shell, args));
 	else if (!ft_strcmp(args[0], "pwd"))
 		return (pwd_builtin(shell));
-	else if (execve_path(shell, args) == 1)
-	{
-		shell->last_exit_code = 127;
-		return (127);
-	}
+	else
+		printf("minishell: %s: command not found\n", args[0]);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/31 23:29:05 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/07/28 03:41:57 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	print_tokens(char **tokens);
 t_shell	*init_shell(void)
 {
 	t_shell	*shell;
+	char	*cwd;
 
 	shell = malloc(sizeof(t_shell));
 	if (!shell)
@@ -31,8 +32,14 @@ t_shell	*init_shell(void)
 	*shell->env_vars = NULL;
 	shell->last_exit_code = 0;
 	shell->pipe_groups = NULL;
-	set_shell_env_vars(shell);
-	shell->env = env_vars_to_env(shell->env_vars);
+	cwd = getcwd(NULL, 0);
+	if (cwd)
+	{
+		set_env_var(shell, "PWD", cwd);
+		free(cwd);
+	}
+	set_env_var(shell, "HOME", getenv("HOME"));
+	set_env_var(shell, "USER", getenv("USER"));
 	return (shell);
 }
 
@@ -40,8 +47,6 @@ void	free_shell(t_shell *shell)
 {
 	if (!shell)
 		return ;
-	if (shell->env)
-		ft_free_split(shell->env);
 	if (shell->env_vars)
 	{
 		free_all_env_vars(shell->env_vars);
@@ -74,7 +79,7 @@ int	run_shell(t_shell *shell)
 		tokens = get_tokens(shell, line);
 		if (tokens)
 		{
-			exec_command(shell, tokens);
+			exec_builtins(shell, tokens);
 			ft_free_split(tokens);
 		}
 	}
