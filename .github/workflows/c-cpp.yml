@@ -19,3 +19,8 @@ jobs:
       run: pip install norminette
     - name: Norminette
       run: norminette srcs includes
+    - name: Run tests
+      run: |
+        cd minishell_tester
+        ./tester
+      continue-on-error: true
