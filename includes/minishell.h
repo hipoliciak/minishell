@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/01 00:15:18 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/08/01 15:53:11 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,10 @@ typedef struct s_env_var
 
 typedef struct s_group
 {
-	char	*str;
+	char	**args;
 	char	*in_file_name;
 	char	*out_file_name;
+	int		arg_i;
 }	t_group;
 
 typedef struct s_shell
@@ -52,7 +53,8 @@ typedef struct s_shell
 	char		**env;
 	t_env_var	**env_vars;
 	int			last_exit_code;
-	t_group		**pipe_groups;
+	t_group		**groups;
+	int			group_i;
 }	t_shell;
 
 // tokenizer
@@ -89,7 +91,7 @@ void		sigint_handler(int sig_num);
 int			exec_command(t_shell *shell, char **args);
 
 // lexer
-t_group		**group_input(char *line);
+void		group_input(t_shell *shell, char **tokens);
 void		print_groups(t_group **groups);
 void		free_groups(t_group **groups);
 
