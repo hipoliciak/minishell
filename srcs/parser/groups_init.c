@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 22:22:09 by dkolida           #+#    #+#             */
-/*   Updated: 2024/08/07 16:31:16 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/07 17:04:35 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,70 +14,44 @@
 
 t_group	*group_init(int argc);
 //static void		extract_infile(t_group *group);
-int		add_to_group(t_shell *shell, t_group *group, char *token, int is_end);
+void	add_to_group(t_shell *shell, char *token, int is_end);
 int		shell_groups_init(t_shell *shell, char **tokens);
 void	set_group_infile_name(t_group *group, char *token);
 
 void	group_input(t_shell *shell, char **tokens)
 {
-	t_group	*group;
 	int		tokens_c;
 	int		i;
 
 	tokens_c = shell_groups_init(shell, tokens);
 	i = 0;
-	group = NULL;
 	while (tokens[i])
 	{
-		if (!group)
-		{
-			group = group_init(tokens_c);
-			if (!group)
-				return ;
-		}
+		if (!shell->groups[shell->group_i])
+			shell->groups[shell->group_i] = group_init(tokens_c);
 		if (ft_strcmp(tokens[i], "<") == 0)
-		{
-			set_group_infile_name(group, tokens[++i]);
-			if ( i == tokens_c - 1)
-			{
-				shell->groups[shell->group_i++] = group;
-				break ;
-			}
-		}
-
-		if (add_to_group(shell, group, tokens[i], i == tokens_c - 1))
-		{
-			group = NULL;
-		}
-
+			set_group_infile_name(shell->groups[shell->group_i], tokens[++i]);
+		else
+			add_to_group(shell, tokens[i], i == tokens_c - 1);
 		i++;
 	}
 }
 
-int	add_to_group(t_shell *shell, t_group *group, char *token, int is_end)
+void	add_to_group(t_shell *shell, char *token, int is_end)
 {
+	int	*group_i;
+	int	*arg_i;
+
+	group_i = &shell->group_i;
+	arg_i = &shell->groups[*group_i]->arg_i;
 	if (ft_strcmp(token, "|") == 0 || is_end)
 	{
 		if (is_end && ft_strcmp(token, "|") != 0)
-		{
-			group->args[group->arg_i++] = ft_strdup(token);
-			if (group->args[group->arg_i - 1] == NULL)
-			{
-				printf("Error: malloc failed\n");
-			}
-		}
-		shell->groups[shell->group_i++] = group;
-		return (1);
+			shell->groups[*group_i]->args[(*arg_i)++] = ft_strdup(token);
+		(*group_i)++;
 	}
 	else
-	{
-		group->args[group->arg_i++] = ft_strdup(token);
-		if (group->args[group->arg_i - 1] == NULL)
-		{
-			printf("Error: malloc failed\n");
-		}
-	}
-	return (0);
+		shell->groups[*group_i]->args[(*arg_i)++] = ft_strdup(token);
 }
 
 t_group	*group_init(int argc)
@@ -104,7 +78,7 @@ t_group	*group_init(int argc)
 int	shell_groups_init(t_shell *shell, char **tokens)
 {
 	int	tokens_count;
-	int i;
+	int	i;
 
 	tokens_count = 0;
 	while (tokens[tokens_count])
