@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 01:59:50 by dkolida           #+#    #+#             */
-/*   Updated: 2024/08/07 16:29:42 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/07 17:09:37 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	free_groups(t_group **pipe_groups)
 		}
 		if (pipe_groups[i]->in_file_name)
 			free(pipe_groups[i]->in_file_name);
+		if (pipe_groups[i]->out_file_name)
+			free(pipe_groups[i]->out_file_name);
 		free(pipe_groups[i]);
 		i++;
 	}
