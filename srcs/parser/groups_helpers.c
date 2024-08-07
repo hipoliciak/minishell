@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 01:59:50 by dkolida           #+#    #+#             */
-/*   Updated: 2024/08/01 14:53:13 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/07 16:29:42 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	print_groups(t_group **groups)
 	{
 		j = 0;
 		printf("group %d:", i);
-		while (groups[i]->args[j])
+		while (j < groups[i]->arg_i)
 		{
 			printf("%s ", groups[i]->args[j]);
 			j++;
@@ -46,8 +46,10 @@ void	free_groups(t_group **pipe_groups)
 			while (pipe_groups[i]->arg_i--)
 				free(pipe_groups[i]->args[pipe_groups[i]->arg_i]);
 			free(pipe_groups[i]->args);
-			free(pipe_groups[i]);
 		}
+		if (pipe_groups[i]->in_file_name)
+			free(pipe_groups[i]->in_file_name);
+		free(pipe_groups[i]);
 		i++;
 	}
 	free(pipe_groups);
