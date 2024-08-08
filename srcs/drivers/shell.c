@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/01 16:01:29 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/07 16:31:39 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ void	free_shell(t_shell *shell)
 		free_all_env_vars(shell->env_vars);
 		free(shell->env_vars);
 	}
-	if (shell->groups)
-		free_groups(shell->groups);
 	free(shell);
 }
 
