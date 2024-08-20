@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+         #
+#    By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/16 21:32:26 by dmodrzej          #+#    #+#              #
-#    Updated: 2024/07/22 20:52:56 by dmodrzej         ###   ########.fr        #
+#    Updated: 2024/07/28 01:10:10 by dkolida          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME	=	minishell
 
 # compiler
 CC		=	cc
-FLAGS	=	-Wall -Wextra -Werror
+FLAGS	=	-Wall -Wextra -Werror -g
 
 # sources
 SRC_DIR		=	srcs/
