@@ -6,13 +6,14 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/07 16:31:39 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/26 23:56:21 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 void	shell_exec(t_shell *shell, char *line);
+void	pipe_exec(t_shell *shell);
 
 t_shell	*init_shell(void)
 {
@@ -72,20 +73,77 @@ int	run_shell(t_shell *shell)
 void	shell_exec(t_shell *shell, char *line)
 {
 	char	**tokens;
-	int		i;
+	int		pid;
+	int		pipefd[2];
+	char	*out_line;
+	int		in_fd;
 
-	i = 0;
 	tokens = get_tokens(shell, line);
 	if (tokens)
 	{
 		group_input(shell, tokens);
-		i = 0;
-		while (shell->groups[i])
+		make_pipe(pipefd);
+		shell->group_i--;
+		pid = make_fork();
+		if (pid == 0)
 		{
-			exec_command(shell, shell->groups[i]->args);
-			i++;
+			if (shell->groups[0]->in_file_name)
+			{
+				in_fd = open(shell->groups[0]->in_file_name, O_RDONLY);
+				dup2(in_fd, STDIN_FILENO);
+				close(in_fd);
+			}
+			close(pipefd[0]);
+			dup2(pipefd[1], STDOUT_FILENO);
+			close(pipefd[1]);
+			pipe_exec(shell);
+			perror("pipe_execcc");
+			exit(EXIT_FAILURE);
+		}
+		else
+		{
+			close(pipefd[1]);
+			out_line = get_next_line(pipefd[0]);
+			while (out_line != NULL)
+			{
+				printf("%s", out_line);
+				free(out_line);
+				out_line = get_next_line(pipefd[0]);
+			}
+			free(out_line);
+			close(pipefd[0]);
+			waitpid(pid, NULL, 0);
 		}
 		ft_free_split(tokens);
 		free_groups(shell->groups);
 	}
+}
+
+void	pipe_exec(t_shell *shell)
+{
+	int	pipefd[2];
+	int	pid;
+
+	if (shell->group_i > 0)
+	{
+		make_pipe(pipefd);
+		pid = make_fork();
+		if (pid == 0)
+		{
+			close(pipefd[0]);
+			dup2(pipefd[1], STDOUT_FILENO);
+			close(pipefd[1]);
+			shell->group_i--;
+			pipe_exec(shell);
+		}
+		else
+		{
+			close(pipefd[1]);
+			waitpid(pid, NULL, 0);
+			dup2(pipefd[0], STDIN_FILENO);
+			close(pipefd[0]);
+		}
+	}
+	//exec_command(shell, shell->groups[shell->group_i]->args);
+	execve_path(shell, shell->groups[shell->group_i]->args);
 }
