@@ -15,12 +15,28 @@ jobs:
         submodules: 'recursive'
     - name: make
       run: make
+
+  norminette:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
     - name: Install Norminette
       run: pip install norminette
     - name: Norminette
       run: norminette srcs includes
+      
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
     - name: Run tests
       run: |
         cd minishell_tester
         ./tester
       continue-on-error: true
+
+      
