@@ -6,11 +6,13 @@
 /*   By: dkolida <dkolida@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 01:59:50 by dkolida           #+#    #+#             */
-/*   Updated: 2024/08/27 18:29:28 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/27 19:21:39 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	free_group(t_group *group, int tokens_count);
 
 void	print_groups(t_group **groups)
 {
@@ -35,64 +37,50 @@ void	print_groups(t_group **groups)
 void	free_groups(t_group **pipe_groups, int tokens_count)
 {
 	int	i;
-	int	j;
 
+	i = 0;
 	if (!pipe_groups)
 		return ;
-	i = 0;
 	while (i < tokens_count)
 	{
-		j = 0;
-		while (j <= tokens_count)
+		if (pipe_groups[i])
 		{
-			free(pipe_groups[i]->args[j]);
-			pipe_groups[i]->args[j++] = NULL;
+			free_group(pipe_groups[i], tokens_count);
+			if (pipe_groups[i]->args)
+			{
+				free(pipe_groups[i]->args);
+				pipe_groups[i]->args = NULL;
+			}
+			free(pipe_groups[i]);
+			pipe_groups[i] = NULL;
 		}
-		free(pipe_groups[i]->args);
-		pipe_groups[i]->args = NULL;
-		if (pipe_groups[i]->in_file_name)
-			free(pipe_groups[i]->in_file_name);
-		if (pipe_groups[i]->out_file_name)
-			free(pipe_groups[i]->out_file_name);
-		free(pipe_groups[i]);
-		pipe_groups[i] = NULL;
 		i++;
 	}
 	free(pipe_groups);
 }
 
-/*
-void free_groups(t_group **pipe_groups, int tokens_count) {
-    if (!pipe_groups)
-        return;
-    int i = 0;
-    while (i < tokens_count) {
-        if (pipe_groups[i]) {
-            int j = 0;
-            while (pipe_groups[i]->args && j <= tokens_count) {
-                if (pipe_groups[i]->args[j]) {
-                    free(pipe_groups[i]->args[j]);
-                    pipe_groups[i]->args[j] = NULL;
-                }
-                j++;
-            }
-            if (pipe_groups[i]->args) {
-                free(pipe_groups[i]->args);
-                pipe_groups[i]->args = NULL;
-            }
-            if (pipe_groups[i]->in_file_name) {
-                free(pipe_groups[i]->in_file_name);
-                pipe_groups[i]->in_file_name = NULL;
-            }
-            if (pipe_groups[i]->out_file_name) {
-                free(pipe_groups[i]->out_file_name);
-                pipe_groups[i]->out_file_name = NULL;
-            }
-            free(pipe_groups[i]);
-            pipe_groups[i] = NULL;
-        }
-        i++;
-    }
-    free(pipe_groups);
+static void	free_group(t_group *group, int tokens_count)
+{
+	int	j;
+
+	j = 0;
+	while (group->args && j <= tokens_count)
+	{
+		if (group->args[j])
+		{
+			free(group->args[j]);
+			group->args[j] = NULL;
+		}
+		j++;
+	}
+	if (group->in_file_name)
+	{
+		free(group->in_file_name);
+		group->in_file_name = NULL;
+	}
+	if (group->out_file_name)
+	{
+		free(group->out_file_name);
+		group->out_file_name = NULL;
+	}
 }
-*/
