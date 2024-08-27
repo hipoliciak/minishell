@@ -6,7 +6,7 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:12:33 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/31 22:52:10 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/08/27 23:04:40 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,36 @@ static char	**get_key_value_pair(char *arg)
 	return (key_value_pair);
 }
 
-int	export_builtin(t_shell *shell, char **args)
+// int	export_builtin(t_shell *shell, char **args)
+// {
+// 	int		i;
+// 	char	**key_value_pair;
+
+// 	i = 1;
+// 	while (args[i])
+// 	{
+// 		if (!is_valid_key(args[i]))
+// 		{
+// 			ft_putstr_fd(" not a valid identifier\n", 2);
+// 			shell->last_exit_code = 1;
+// 			return (1);
+// 		}
+// 		else if (ft_strchr(args[i], '=') != NULL)
+// 		{
+// 			key_value_pair = get_key_value_pair(args[i]);
+// 			if (!key_value_pair)
+// 				return (1);
+// 			set_env_var(shell, key_value_pair[0], key_value_pair[1]);
+// 			free_key_value_pair(key_value_pair);
+// 		}
+// 		else
+// 			set_env_var(shell, args[i], "");
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+void	export_builtin(t_shell *shell, char **args)
 {
 	int		i;
 	char	**key_value_pair;
@@ -76,13 +105,13 @@ int	export_builtin(t_shell *shell, char **args)
 		{
 			ft_putstr_fd(" not a valid identifier\n", 2);
 			shell->last_exit_code = 1;
-			return (1);
+			exit(1);
 		}
 		else if (ft_strchr(args[i], '=') != NULL)
 		{
 			key_value_pair = get_key_value_pair(args[i]);
 			if (!key_value_pair)
-				return (1);
+				exit(1);
 			set_env_var(shell, key_value_pair[0], key_value_pair[1]);
 			free_key_value_pair(key_value_pair);
 		}
@@ -90,5 +119,4 @@ int	export_builtin(t_shell *shell, char **args)
 			set_env_var(shell, args[i], "");
 		i++;
 	}
-	return (0);
 }

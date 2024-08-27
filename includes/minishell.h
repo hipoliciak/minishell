@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/27 18:28:51 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/28 00:31:32 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,19 @@ char		**env_vars_to_env(t_env_var **env_vars);
 
 // builtins
 int			cd_builtin(t_shell *shell, char **args);
-int			echo_builtin(t_shell *shell, char **args);
-int			env_builtin(t_shell *shell);
-int			export_builtin(t_shell *shell, char **args);
-int			unset_builtin(t_shell *shell, char **args);
-int			pwd_builtin(t_shell *shell);
+// int			echo_builtin(t_shell *shell, char **args);
+// int			env_builtin(t_shell *shell);
+// int			export_builtin(t_shell *shell, char **args);
+// int			unset_builtin(t_shell *shell, char **args);
+// int			pwd_builtin(t_shell *shell);
 int			exit_builtin(t_shell *shell, char **args);
+// void		cd_builtin(t_shell *shell, char **args);
+void		echo_builtin(t_shell *shell, char **args);
+void		env_builtin(t_shell *shell);
+void		export_builtin(t_shell *shell, char **args);
+void		unset_builtin(t_shell *shell, char **args);
+void		pwd_builtin(t_shell *shell);
+// void		exit_builtin(t_shell *shell, char **args);
 
 // drivers
 char		*ft_read_line(char *line);
@@ -90,7 +97,12 @@ t_shell		*init_shell(void);
 int			run_shell(t_shell *shell);
 void		free_shell(t_shell *shell);
 void		sigint_handler(int sig_num);
-int			exec_command(t_shell *shell, char **args);
+void		ignore_sigquit(void);
+void		set_signals_interactive(void);
+void		set_signals_noninteractive(void);
+// int			exec_command(t_shell *shell, char **args);
+void		exec_command(t_shell *shell, char **args);
+int			is_builtin(char *command);
 
 // lexer
 void		group_input(t_shell *shell, char **tokens);

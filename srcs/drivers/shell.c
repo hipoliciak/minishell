@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/27 17:52:27 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/28 00:46:39 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,11 @@ int	run_shell(t_shell *shell)
 	char	*line;
 	char	**tokens;
 
-	signal(SIGINT, sigint_handler);
 	line = NULL;
 	while (1)
 	{
+		set_signals_interactive();
+		set_signals_noninteractive();
 		line = ft_read_line(line);
 		if (!line)
 		{
@@ -74,20 +75,47 @@ int	run_shell(t_shell *shell)
 	return (0);
 }
 
+// void	shell_exec(t_shell *shell, char **tokens)
+// {
+// 	int		pid;
+// 	int		pipefd[2];
+
+// 	if (tokens)
+// 	{
+// 		group_input(shell, tokens);
+// 		make_pipe(pipefd);
+// 		pid = make_fork();
+// 		if (pid == 0)
+// 			child_process(shell, pipefd);
+// 		else
+// 			parent_process(pipefd, pid);
+// 		ft_free_split(tokens);
+// 	}
+// 	free_groups(shell->groups, shell->tokens_count);
+// }
+
 void	shell_exec(t_shell *shell, char **tokens)
 {
 	int		pid;
 	int		pipefd[2];
+	int		builtin;
 
+	builtin = 0;
 	if (tokens)
 	{
 		group_input(shell, tokens);
-		make_pipe(pipefd);
-		pid = make_fork();
-		if (pid == 0)
-			child_process(shell, pipefd);
+		builtin = is_builtin(shell->groups[shell->group_i]->args[0]);
+		if (builtin)
+			exec_command(shell, shell->groups[shell->group_i]->args);
 		else
-			parent_process(pipefd, pid);
+		{
+			make_pipe(pipefd);
+			pid = make_fork();
+			if (pid == 0)
+				child_process(shell, pipefd);
+			else
+				parent_process(pipefd, pid);
+		}
 		ft_free_split(tokens);
 	}
 	free_groups(shell->groups, shell->tokens_count);
@@ -109,6 +137,7 @@ void	pipe_exec(t_shell *shell)
 			close(pipefd[1]);
 			shell->group_i--;
 			pipe_exec(shell);
+			exit(shell->last_exit_code);
 		}
 		else
 		{
@@ -118,7 +147,5 @@ void	pipe_exec(t_shell *shell)
 			close(pipefd[0]);
 		}
 	}
-	execve_path(shell, shell->groups[shell->group_i]->args);
+	exec_command(shell, shell->groups[shell->group_i]->args);
 }
-// To replace last line when buildins will be implemented with exit()
-//exec_command(shell, shell->groups[shell->group_i]->args);
