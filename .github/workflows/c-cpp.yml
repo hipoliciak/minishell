@@ -26,7 +26,7 @@ jobs:
       run: pip install norminette
     - name: Norminette
       run: norminette srcs includes
-      
+
   tests:
     runs-on: ubuntu-latest
     steps:
@@ -40,5 +40,4 @@ jobs:
         cd minishell_tester
         ./tester
       continue-on-error: true
-
-      
+      timeout-minutes: 1
