@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/26 23:55:53 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/27 14:51:36 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,5 +110,10 @@ char		*get_path(char **path, char *cmd);
 // pipe_helpers
 void		make_pipe(int *pipefd);
 int			make_fork(void);
+void		pipe_exec(t_shell *shell);
+
+// core_processes
+void		child_process(t_shell *shell, int *pipefd);
+void		parent_process(int *pipefd, int pid);
 
 #endif
