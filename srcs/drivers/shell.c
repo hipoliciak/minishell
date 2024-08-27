@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/27 14:54:43 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/27 17:52:27 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	shell_exec(t_shell *shell, char **tokens)
 			parent_process(pipefd, pid);
 		ft_free_split(tokens);
 	}
-	free_groups(shell->groups);
+	free_groups(shell->groups, shell->tokens_count);
 }
 
 void	pipe_exec(t_shell *shell)

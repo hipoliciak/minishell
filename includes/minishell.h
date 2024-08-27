@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/27 14:51:36 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/27 18:28:51 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_shell
 	int			last_exit_code;
 	t_group		**groups;
 	int			group_i;
+	int			tokens_count;
 }	t_shell;
 
 // tokenizer
@@ -94,7 +95,7 @@ int			exec_command(t_shell *shell, char **args);
 // lexer
 void		group_input(t_shell *shell, char **tokens);
 void		print_groups(t_group **groups);
-void		free_groups(t_group **groups);
+void		free_groups(t_group **groups, int tokens_count);
 
 // helpers
 void		ft_free_split(char **split);
