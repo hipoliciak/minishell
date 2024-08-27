@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   groups_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 22:22:09 by dkolida           #+#    #+#             */
-/*   Updated: 2024/08/27 14:38:15 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/27 18:22:43 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	group_input(t_shell *shell, char **tokens)
 
 	group_i = &shell->group_i;
 	tokens_c = shell_groups_init(shell, tokens);
+	shell->tokens_count = tokens_c;
 	i = 0;
 	while (tokens[i])
 	{
@@ -71,8 +72,8 @@ t_group	*group_init(int argc)
 		free(group);
 		return (NULL);
 	}
-	while (group->args[argc--])
-		group->args[argc] = NULL;
+	while (argc >= 0)
+		group->args[argc--] = NULL;
 	group->arg_i = 0;
 	group->in_file_name = NULL;
 	group->out_file_name = NULL;
