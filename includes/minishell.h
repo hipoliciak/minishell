@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/01 15:53:11 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/26 23:55:53 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <limits.h>
 # include <sys/wait.h>
 # include <errno.h>
+# include <fcntl.h>
 
 typedef struct s_command
 {
@@ -105,5 +106,9 @@ char		*ft_strjoin_and_free(char *str1, char *str2);
 int			execve_path(t_shell *shell, char **args);
 char		**envp_path(char **envp);
 char		*get_path(char **path, char *cmd);
+
+// pipe_helpers
+void		make_pipe(int *pipefd);
+int			make_fork(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 22:35:37 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/01 15:33:36 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/26 23:46:55 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,26 +84,13 @@ int	execve_path(t_shell *shell, char **args)
 {
 	char	*full_path;
 	int		status;
-	int		pid;
 
 	full_path = set_path(shell, args);
 	if (!full_path)
 		return (1);
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork");
-		free(full_path);
-		return (1);
-	}
-	if (pid == 0)
-	{
-		status = execve(full_path, args, shell->env);
-		free(full_path);
-		exit(status);
-	}
-	else
-		waitpid(pid, &status, 0);
+	status = execve(full_path, args, shell->env);
+	perror("execve");
 	free(full_path);
+	exit(status);
 	return (status);
 }
