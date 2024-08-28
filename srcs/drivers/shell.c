@@ -6,7 +6,7 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/28 00:46:39 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:39:19 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	shell_exec(t_shell *shell, char **tokens);
 void	pipe_exec(t_shell *shell);
 
-t_shell	*init_shell(void)
+t_shell	*init_shell(char **env)
 {
 	t_shell	*shell;
 
@@ -30,7 +30,7 @@ t_shell	*init_shell(void)
 	}
 	*shell->env_vars = NULL;
 	shell->last_exit_code = 0;
-	set_shell_env_vars(shell);
+	set_shell_env_vars(shell, env);
 	shell->env = env_vars_to_env(shell->env_vars);
 	return (shell);
 }
@@ -98,24 +98,22 @@ void	shell_exec(t_shell *shell, char **tokens)
 {
 	int		pid;
 	int		pipefd[2];
-	int		builtin;
 
-	builtin = 0;
 	if (tokens)
 	{
 		group_input(shell, tokens);
-		builtin = is_builtin(shell->groups[shell->group_i]->args[0]);
-		if (builtin)
-			exec_command(shell, shell->groups[shell->group_i]->args);
-		else
+		if (shell->group_i == 0)
 		{
-			make_pipe(pipefd);
-			pid = make_fork();
-			if (pid == 0)
-				child_process(shell, pipefd);
-			else
-				parent_process(pipefd, pid);
+			pipe_exec(shell);
+			ft_free_split(tokens);
+			return ;
 		}
+		make_pipe(pipefd);
+		pid = make_fork();
+		if (pid == 0)
+			child_process(shell, pipefd);
+		else
+			parent_process(pipefd, pid);
 		ft_free_split(tokens);
 	}
 	free_groups(shell->groups, shell->tokens_count);

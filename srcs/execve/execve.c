@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execve.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 22:35:37 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/26 23:46:55 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/28 17:25:06 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,27 @@ char	*get_path(char **path, char *cmd)
 	return (NULL);
 }
 
+int	is_absolute_or_relative_path(char *cmd)
+{
+	if (cmd[0] == '/')
+		return (1);
+	if (cmd[0] == '.' && cmd[1] == '/')
+		return (1);
+	return (0);
+}
+
 char	*set_path(t_shell *shell, char **args)
 {
 	char	**path;
 	char	*full_path;
 
+	if (is_absolute_or_relative_path(args[0]))
+	{
+		if (access(args[0], F_OK) == 0)
+			return (ft_strdup(args[0]));
+		ft_putendl_fd(" command not found", 2);
+		return (NULL);
+	}
 	path = envp_path(shell->env);
 	if (!path)
 		return (NULL);
