@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   groups_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 22:22:09 by dkolida           #+#    #+#             */
-/*   Updated: 2024/08/27 18:22:43 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/29 22:56:14 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ void	add_to_group(t_shell *shell, char *token, int is_end)
 	arg_i = &shell->groups[*group_i]->arg_i;
 	if (ft_strcmp(token, "|") == 0 || is_end)
 	{
-		if (is_end && ft_strcmp(token, "|") != 0)
+		if ((is_end && ft_strcmp(token, "|") != 0)
+			|| (ft_strcmp(shell->groups[*group_i]->args[(*arg_i) - 1], "echo")
+				== 0))
 			shell->groups[*group_i]->args[(*arg_i)++] = ft_strdup(token);
 		(*group_i)++;
 	}
