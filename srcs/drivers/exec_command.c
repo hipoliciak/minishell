@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:04:36 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/28 19:05:34 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/08/29 20:52:12 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,13 @@
 
 int	is_builtin(char *command)
 {
-	int		is_builtin;
-
-	is_builtin = 0;
-	if (!ft_strcmp(command, "echo"))
-		is_builtin = 1;
-	else if (!ft_strcmp(command, "cd"))
-		is_builtin = 1;
-	else if (!ft_strcmp(command, "env"))
-		is_builtin = 1;
-	else if (!ft_strcmp(command, "export"))
-		is_builtin = 1;
-	else if (!ft_strcmp(command, "unset"))
-		is_builtin = 1;
-	else if (!ft_strcmp(command, "exit"))
-		is_builtin = 1;
-	else if (!ft_strcmp(command, "pwd"))
-		is_builtin = 1;
-	return (is_builtin);
+	return (!ft_strcmp(command, "echo")
+		|| !ft_strcmp(command, "cd")
+		|| !ft_strcmp(command, "env")
+		|| !ft_strcmp(command, "export")
+		|| !ft_strcmp(command, "unset")
+		|| !ft_strcmp(command, "exit")
+		|| !ft_strcmp(command, "pwd"));
 }
 
 int	exec_builtin(t_shell *shell, char **args)
