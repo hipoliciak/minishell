@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:24:00 by dkolida           #+#    #+#             */
-/*   Updated: 2024/08/30 19:34:24 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/30 20:53:13 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,14 @@ void	shell_exec(t_shell *shell, char **tokens)
 
 int	shell_exec_group(t_shell *shell, int *pipe_fd, int in_fd, int i)
 {
+	if (shell->groups[i]->in_file_name)
+	{
+		if (in_fd > 0)
+			close(in_fd);
+		in_fd = open(shell->groups[i]->in_file_name, O_RDONLY);
+	}
+	if (shell->groups[i]->args[0] == NULL)
+		return (in_fd);
 	if (is_builtin(shell->groups[i]->args[0]))
 		in_fd = shell_exec_buildin(shell, pipe_fd, in_fd, i);
 	else
