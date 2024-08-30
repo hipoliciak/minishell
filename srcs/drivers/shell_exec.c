@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:24:00 by dkolida           #+#    #+#             */
-/*   Updated: 2024/08/30 20:53:13 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/30 21:40:01 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,13 @@ int	shell_exec_group(t_shell *shell, int *pipe_fd, int in_fd, int i)
 
 int	shell_exec_buildin(t_shell *shell, int *pipe_fd, int in_fd, int i)
 {
-	shell->out_fd = pipe_fd[1];
+	if (shell->groups[i]->out_file_name)
+	{
+		shell->out_fd = open(shell->groups[i]->out_file_name,
+				O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	}
+	else
+		shell->out_fd = pipe_fd[1];
 	exec_builtin(shell, shell->groups[i]->args);
 	close(pipe_fd[1]);
 	in_fd = dup(pipe_fd[0]);

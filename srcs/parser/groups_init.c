@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 22:22:09 by dkolida           #+#    #+#             */
-/*   Updated: 2024/08/30 20:52:49 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/30 21:34:41 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	group_input(t_shell *shell, char **tokens)
 			add_to_group(shell, tokens[i], i == tokens_c - 1);
 		i++;
 	}
-	(*group_i)--;
+	if (*group_i > 0)
+		(*group_i)--;
 }
 //The group_i variable is used to keep track of the current group index later.
 
