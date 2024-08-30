@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/28 18:13:31 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/08/30 03:32:06 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_shell
 	t_group		**groups;
 	int			group_i;
 	int			tokens_count;
+	int 		out_fd;
 }	t_shell;
 
 // tokenizer
@@ -71,7 +72,6 @@ void		free_all_env_vars(t_env_var **env_vars);
 int			set_env_var(t_shell *shell, char *key, char *value);
 char		*get_env_var(t_shell *shell, char *key);
 void		remove_env_var(t_shell *shell, char *key);
-void		print_env_var(t_env_var *var);
 void		set_shell_env_vars(t_shell *shell, char **env);
 char		**env_vars_to_env(t_env_var **env_vars);
 
@@ -120,8 +120,6 @@ int			make_fork(void);
 void		pipe_exec(t_shell *shell);
 void		exec_command(t_shell *shell, char **args);
 
-// core_processes
-void		child_process(t_shell *shell, int *pipefd);
-void		parent_process(int *pipefd, int pid);
+int			is_builtin(char *command);
 
 #endif

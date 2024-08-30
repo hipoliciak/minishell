@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:08:49 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/28 17:35:02 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/08/30 03:31:50 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,12 @@ int	env_builtin(t_shell *shell)
 		return (1);
 	while (var)
 	{
-		print_env_var(var);
+		if (var)
+		{
+			ft_putstr_fd(var->key, shell->out_fd);
+			ft_putstr_fd("=", shell->out_fd);
+			ft_putendl_fd(var->value, shell->out_fd);
+		}
 		var = var->next;
 	}
 	shell->last_exit_code = 0;

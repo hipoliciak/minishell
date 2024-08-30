@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/28 18:39:19 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/08/30 03:25:22 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,75 +75,80 @@ int	run_shell(t_shell *shell)
 	return (0);
 }
 
-// void	shell_exec(t_shell *shell, char **tokens)
-// {
-// 	int		pid;
-// 	int		pipefd[2];
-
-// 	if (tokens)
-// 	{
-// 		group_input(shell, tokens);
-// 		make_pipe(pipefd);
-// 		pid = make_fork();
-// 		if (pid == 0)
-// 			child_process(shell, pipefd);
-// 		else
-// 			parent_process(pipefd, pid);
-// 		ft_free_split(tokens);
-// 	}
-// 	free_groups(shell->groups, shell->tokens_count);
-// }
-
-void	shell_exec(t_shell *shell, char **tokens)
+void shell_exec(t_shell *shell, char **tokens)
 {
-	int		pid;
-	int		pipefd[2];
+	int i = 0;
+	int in_fd = -1;
+	int pipe_fd[2];
+	char buffer[65536];
+	ssize_t bytes_read;
+	int terminal_fd;
+	int	pid;
 
 	if (tokens)
 	{
 		group_input(shell, tokens);
-		if (shell->group_i == 0)
-		{
-			pipe_exec(shell);
-			ft_free_split(tokens);
-			return ;
+		terminal_fd = dup(STDOUT_FILENO);
+		if (terminal_fd == -1) {
+			perror("dup");
+			exit(EXIT_FAILURE);
 		}
-		make_pipe(pipefd);
-		pid = make_fork();
-		if (pid == 0)
-			child_process(shell, pipefd);
-		else
-			parent_process(pipefd, pid);
+
+		while (i <= shell->group_i)
+		{
+
+			make_pipe(pipe_fd);
+			if (is_builtin(shell->groups[i]->args[0]))
+			{
+				shell->out_fd = pipe_fd[1];
+				exec_builtin(shell, shell->groups[i]->args);
+				close(pipe_fd[1]);
+				in_fd = dup(pipe_fd[0]);
+				if (i < shell->group_i)
+					close(pipe_fd[0]);
+				else
+					close(in_fd);
+			}
+			else
+			{
+				pid = make_fork();
+				if (pid == 0)
+				{
+					if (in_fd > 0)
+					{
+						dup2(in_fd, STDIN_FILENO);
+						close(in_fd);
+					}
+					close(pipe_fd[0]);
+					dup2(pipe_fd[1], STDOUT_FILENO);
+					close(pipe_fd[1]);
+					exec_command(shell, shell->groups[i]->args);
+					exit(shell->last_exit_code);
+				}
+				else
+				{
+					close(pipe_fd[1]);
+					//waitpid(pid, NULL, 0);
+					in_fd = dup(pipe_fd[0]);
+					if (i < shell->group_i)
+						close(pipe_fd[0]);
+					else
+						close(in_fd);
+				}
+			}
+			i++;
+		}
+		while ((bytes_read = read(pipe_fd[0], buffer, sizeof(buffer) - 1)) > 0)
+		{
+			buffer[bytes_read] = '\0';
+			write(terminal_fd, buffer, bytes_read);
+		}
+		if (bytes_read == -1) {
+			perror("read");
+		}
+		close(terminal_fd);
+		close(pipe_fd[0]);
 		ft_free_split(tokens);
 	}
 	free_groups(shell->groups, shell->tokens_count);
-}
-
-void	pipe_exec(t_shell *shell)
-{
-	int	pipefd[2];
-	int	pid;
-
-	if (shell->group_i > 0)
-	{
-		make_pipe(pipefd);
-		pid = make_fork();
-		if (pid == 0)
-		{
-			close(pipefd[0]);
-			dup2(pipefd[1], STDOUT_FILENO);
-			close(pipefd[1]);
-			shell->group_i--;
-			pipe_exec(shell);
-			exit(shell->last_exit_code);
-		}
-		else
-		{
-			close(pipefd[1]);
-			waitpid(pid, NULL, 0);
-			dup2(pipefd[0], STDIN_FILENO);
-			close(pipefd[0]);
-		}
-	}
-	exec_command(shell, shell->groups[shell->group_i]->args);
 }

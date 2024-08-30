@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:04:36 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/29 20:52:12 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/30 02:42:23 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,24 +45,9 @@ int	exec_builtin(t_shell *shell, char **args)
 
 void	exec_command(t_shell *shell, char **args)
 {
-	int	builtin;
-	int	i;
-
-	i = 0;
-	while (args[i])
+	if (execve_path(shell, args) != 0)
 	{
-		builtin = is_builtin(args[i]);
-		if (builtin)
-		{
-			if (exec_builtin(shell, shell->groups[shell->group_i]->args) != 0)
-				exit(shell->last_exit_code);
-			return ;
-		}
-		if (execve_path(shell, shell->groups[shell->group_i]->args) != 0)
-		{
-			shell->last_exit_code = 127;
-			exit(shell->last_exit_code);
-		}
-		i++;
+		shell->last_exit_code = 127;
+		exit(shell->last_exit_code);
 	}
 }

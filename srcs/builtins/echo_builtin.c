@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 22:55:21 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/28 17:34:35 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/08/30 01:43:49 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ int	echo_builtin(t_shell *shell, char **args)
 	}
 	while (args[i])
 	{
-		ft_putstr_fd(args[i], STDOUT_FILENO);
+		ft_putstr_fd(args[i], shell->out_fd);
 		if (args[i + 1])
-			ft_putstr_fd(" ", STDOUT_FILENO);
+			ft_putstr_fd(" ", shell->out_fd);
 		i++;
 	}
 	if (nl)
-		ft_putstr_fd("\n", STDOUT_FILENO);
+		ft_putstr_fd("\n", shell->out_fd);
 	shell->last_exit_code = 0;
 	return (0);
 }
