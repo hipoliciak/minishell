@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/30 03:32:06 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/30 19:28:25 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct s_shell
 	t_group		**groups;
 	int			group_i;
 	int			tokens_count;
-	int 		out_fd;
+	int			out_fd;
 }	t_shell;
 
 // tokenizer
@@ -122,4 +122,6 @@ void		exec_command(t_shell *shell, char **args);
 
 int			is_builtin(char *command);
 
+//shell
+void		shell_exec(t_shell *shell, char **tokens);
 #endif
