@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:24:00 by dkolida           #+#    #+#             */
-/*   Updated: 2024/08/30 21:40:01 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/31 13:50:59 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ int	shell_exec_group(t_shell *shell, int *pipe_fd, int in_fd, int i)
 		if (in_fd > 0)
 			close(in_fd);
 		in_fd = open(shell->groups[i]->in_file_name, O_RDONLY);
+		if (in_fd == -1)
+		{
+			perror("open");
+			exit(EXIT_FAILURE);
+		}
 	}
 	if (shell->groups[i]->args[0] == NULL)
 		return (in_fd);
@@ -69,6 +74,11 @@ int	shell_exec_buildin(t_shell *shell, int *pipe_fd, int in_fd, int i)
 	{
 		shell->out_fd = open(shell->groups[i]->out_file_name,
 				O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (shell->out_fd == -1)
+		{
+			perror("open");
+			exit(EXIT_FAILURE);
+		}
 	}
 	else
 		shell->out_fd = pipe_fd[1];
