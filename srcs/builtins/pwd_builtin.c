@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:07:00 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/24 23:22:47 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/08/30 02:04:59 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ int	pwd_builtin(t_shell *shell)
 	if (!path)
 	{
 		perror("pwd");
-		return (1);
+		exit(1);
 	}
-	ft_putendl_fd(path, 1);
+	ft_putendl_fd(path, shell->out_fd);
 	free(path);
+	shell->last_exit_code = 0;
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   groups_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 22:22:09 by dkolida           #+#    #+#             */
-/*   Updated: 2024/08/27 18:22:43 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/30 21:34:41 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,29 @@ void	group_input(t_shell *shell, char **tokens)
 			add_to_group(shell, tokens[i], i == tokens_c - 1);
 		i++;
 	}
-	(*group_i)--;
+	if (*group_i > 0)
+		(*group_i)--;
 }
 //The group_i variable is used to keep track of the current group index later.
 
 void	add_to_group(t_shell *shell, char *token, int is_end)
 {
-	int	*group_i;
+	int	*i;
 	int	*arg_i;
 
-	group_i = &shell->group_i;
-	arg_i = &shell->groups[*group_i]->arg_i;
+	i = &shell->group_i;
+	arg_i = &shell->groups[*i]->arg_i;
 	if (ft_strcmp(token, "|") == 0 || is_end)
 	{
-		if (is_end && ft_strcmp(token, "|") != 0)
-			shell->groups[*group_i]->args[(*arg_i)++] = ft_strdup(token);
-		(*group_i)++;
+		if ((is_end && ft_strcmp(token, "|") != 0)
+			|| (((*arg_i) > 0)
+				&& (ft_strcmp(shell->groups[*i]->args[(*arg_i) - 1], "echo")
+					== 0)))
+			shell->groups[*i]->args[(*arg_i)++] = ft_strdup(token);
+		(*i)++;
 	}
 	else
-		shell->groups[*group_i]->args[(*arg_i)++] = ft_strdup(token);
+		shell->groups[*i]->args[(*arg_i)++] = ft_strdup(token);
 }
 
 t_group	*group_init(int argc)

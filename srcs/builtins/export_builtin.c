@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:12:33 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/31 22:52:10 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/08/30 02:05:19 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,13 @@ static char	**get_key_value_pair(char *arg)
 	return (key_value_pair);
 }
 
+static char	not_valid_identifier(t_shell *shell)
+{
+	ft_putendl_fd(" not a valid identifier", shell->out_fd);
+	shell->last_exit_code = 1;
+	return (1);
+}
+
 int	export_builtin(t_shell *shell, char **args)
 {
 	int		i;
@@ -73,16 +80,12 @@ int	export_builtin(t_shell *shell, char **args)
 	while (args[i])
 	{
 		if (!is_valid_key(args[i]))
-		{
-			ft_putstr_fd(" not a valid identifier\n", 2);
-			shell->last_exit_code = 1;
-			return (1);
-		}
+			return (not_valid_identifier(shell));
 		else if (ft_strchr(args[i], '=') != NULL)
 		{
 			key_value_pair = get_key_value_pair(args[i]);
 			if (!key_value_pair)
-				return (1);
+				exit(1);
 			set_env_var(shell, key_value_pair[0], key_value_pair[1]);
 			free_key_value_pair(key_value_pair);
 		}
@@ -90,5 +93,6 @@ int	export_builtin(t_shell *shell, char **args)
 			set_env_var(shell, args[i], "");
 		i++;
 	}
+	shell->last_exit_code = 0;
 	return (0);
 }

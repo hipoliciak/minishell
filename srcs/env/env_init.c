@@ -6,26 +6,34 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 22:54:51 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/31 23:36:41 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/08/28 18:47:30 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	set_shell_env_vars(t_shell *shell)
+void	set_shell_env_vars(t_shell *shell, char **env)
 {
-	char	*cwd;
+	int		i;
+	char	*key;
+	char	*value;
+	char	*eql;
 
-	cwd = getcwd(NULL, 0);
-	if (cwd)
+	i = 0;
+	while (env[i])
 	{
-		set_env_var(shell, "PWD", cwd);
-		free(cwd);
+		eql = ft_strchr(env[i], '=');
+		if (eql)
+		{
+			key = ft_substr(env[i], 0, eql - env[i]);
+			value = ft_strdup(eql + 1);
+			if (key && value)
+				set_env_var(shell, key, value);
+			free(key);
+			free(value);
+		}
+		i++;
 	}
-	set_env_var(shell, "HOME", getenv("HOME"));
-	set_env_var(shell, "USER", getenv("USER"));
-	set_env_var(shell, "PATH", getenv("PATH"));
-	set_env_var(shell, "EMPTY", "");
 }
 
 char	**iter_env_vars(char **env, t_env_var *var)

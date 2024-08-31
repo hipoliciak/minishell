@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handlers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:21:53 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/23 00:56:18 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/28 16:29:53 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,44 @@
 void	sigint_handler(int sig_num)
 {
 	(void)sig_num;
-	rl_replace_line("\n", 0);
 	ft_putendl_fd("", 1);
 	rl_on_new_line();
+	rl_replace_line("", 0);
 	rl_redisplay();
+}
+
+void	set_signals_interactive(void)
+{
+	struct sigaction	act;
+
+	ignore_sigquit();
+	ft_memset(&act, 0, sizeof(act));
+	act.sa_handler = &sigint_handler;
+	sigaction(SIGINT, &act, NULL);
+}
+
+void	ignore_sigquit(void)
+{
+	struct sigaction	act;
+
+	ft_memset(&act, 0, sizeof(act));
+	act.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &act, NULL);
+}
+
+void	signal_new_line(int sig_num)
+{
+	(void)sig_num;
+	ft_putendl_fd("", 1);
+	rl_on_new_line();
+}
+
+void	set_signals_noninteractive(void)
+{
+	struct sigaction	act;
+
+	ft_memset(&act, 0, sizeof(act));
+	act.sa_handler = &signal_new_line;
+	sigaction(SIGINT, &act, NULL);
+	sigaction(SIGQUIT, &act, NULL);
 }

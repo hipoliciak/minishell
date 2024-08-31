@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 22:15:47 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/07/31 22:57:33 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/08/30 03:32:12 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,4 @@ void	remove_env_var(t_shell *shell, char *key)
 		prev = var;
 		var = var->next;
 	}
-}
-
-void	print_env_var(t_env_var *var)
-{
-	if (!var)
-		return ;
-	printf("%s=%s\n", var->key, var->value);
 }
