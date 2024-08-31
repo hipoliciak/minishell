@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:02:48 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/30 02:04:28 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/31 18:07:32 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static int	arg_error(t_shell *shell)
 {
-	ft_putendl_fd(" too many arguments", shell->out_fd);
+	ft_putendl_fd(" too many arguments", 2);
 	shell->last_exit_code = 1;
 	return (1);
 }

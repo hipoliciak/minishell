@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/30 19:28:25 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/31 17:15:11 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void		free_shell(t_shell *shell);
 void		sigint_handler(int sig_num);
 void		ignore_sigquit(void);
 void		set_signals_interactive(void);
-void		set_signals_noninteractive(void);
+void		set_signals_for_execution(void);
 int			exec_builtin(t_shell *shell, char **args);
 int			is_builtin(char *command);
 

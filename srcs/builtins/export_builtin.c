@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:12:33 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/30 02:05:19 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/31 17:17:27 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static char	**get_key_value_pair(char *arg)
 
 static char	not_valid_identifier(t_shell *shell)
 {
-	ft_putendl_fd(" not a valid identifier", shell->out_fd);
+	ft_putendl_fd(" not a valid identifier", 2);
 	shell->last_exit_code = 1;
 	return (1);
 }

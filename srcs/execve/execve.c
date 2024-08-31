@@ -6,7 +6,7 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 22:35:37 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/31 14:14:47 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/08/31 18:42:21 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ char	*set_path(t_shell *shell, char **args)
 	{
 		if (access(args[0], F_OK) == 0)
 			return (ft_strdup(args[0]));
+		shell->last_exit_code = 127;
 		ft_putendl_fd(" command not found", 2);
 		return (NULL);
 	}
@@ -89,6 +90,7 @@ char	*set_path(t_shell *shell, char **args)
 	if (!full_path)
 	{
 		ft_putendl_fd(" command not found", 2);
+		shell->last_exit_code = 127;
 		ft_free_split(path);
 		return (NULL);
 	}
