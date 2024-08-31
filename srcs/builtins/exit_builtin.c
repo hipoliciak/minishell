@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:10:29 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/30 02:05:39 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/08/31 17:18:26 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 static int	too_many_args_error(t_shell *shell)
 {
-	ft_putendl_fd("exit: too many arguments", shell->out_fd);
+	ft_putendl_fd("exit: too many arguments", 2);
 	shell->last_exit_code = 1;
 	return (1);
 }
 
 static int	number_error(t_shell *shell)
 {
-	ft_putendl_fd("exit: numeric argument required", shell->out_fd);
+	ft_putendl_fd("exit: numeric argument required", 2);
 	shell->last_exit_code = 2;
 	return (2);
 }

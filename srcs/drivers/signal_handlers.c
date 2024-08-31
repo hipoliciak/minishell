@@ -6,7 +6,7 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:21:53 by dkolida           #+#    #+#             */
-/*   Updated: 2024/08/28 16:29:53 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/08/31 17:36:04 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	set_signals_interactive(void)
 	ignore_sigquit();
 	ft_memset(&act, 0, sizeof(act));
 	act.sa_handler = &sigint_handler;
+	act.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &act, NULL);
 }
 
@@ -40,19 +41,12 @@ void	ignore_sigquit(void)
 	sigaction(SIGQUIT, &act, NULL);
 }
 
-void	signal_new_line(int sig_num)
-{
-	(void)sig_num;
-	ft_putendl_fd("", 1);
-	rl_on_new_line();
-}
-
-void	set_signals_noninteractive(void)
+void	set_signals_for_execution(void)
 {
 	struct sigaction	act;
 
 	ft_memset(&act, 0, sizeof(act));
-	act.sa_handler = &signal_new_line;
+	act.sa_handler = SIG_IGN;
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
 }
