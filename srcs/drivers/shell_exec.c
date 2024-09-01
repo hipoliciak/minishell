@@ -6,7 +6,7 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:24:00 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/01 21:04:47 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/01 21:27:20 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,11 @@ void	shell_print_output(int fd, int *pipe_fd)
 		perror("file descriptor error");
 		exit(EXIT_FAILURE);
 	}
-	bytes_read = read(pipe_fd[0], buffer, BUFFER_SIZE - 1);
+    while ((bytes_read = read(pipe_fd[0], buffer, BUFFER_SIZE - 1)) > 0)
+    {
+        buffer[bytes_read] = '\0';
+        write(fd, buffer, bytes_read);
+    }
 	if (bytes_read != -1)
 	{
 		if (errno == EINTR)
@@ -107,11 +111,4 @@ void	shell_print_output(int fd, int *pipe_fd)
 		else
 			close(pipe_fd[0]);
 	}
-	while (bytes_read > 0)
-	{
-		buffer[bytes_read] = '\0';
-		write(fd, buffer, bytes_read);
-		bytes_read = read(pipe_fd[0], buffer, BUFFER_SIZE - 1);
-	}
-	write(fd, "\n", 1);
 }
