@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:53:46 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/01 21:39:30 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/01 22:37:17 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ char	**get_tokens(t_shell *shell, char *input)
 		handle_spesials(input[i++], data);
 	if (*(data->token) != '\0')
 		data->tokens[data->index++] = data->token;
-	else
-		if (data->index == 0 && free_tokenizer(data))
-			return (NULL);
+	else if (data->token)
+		free(data->token);
 	data->token = NULL;
 	data->tokens[data->index] = NULL;
-	if ((data->in_double_q || data->in_single_q) && free_tokenizer(data))
-		perror("Error: unclosed quotes");
+	if ((data->index == 0 || data->in_double_q || data->in_single_q)
+		&& free_tokenizer(data))
+		return (NULL);
 	interpolate(shell, data);
 	tokens = data->tokens;
 	data->tokens = NULL;
