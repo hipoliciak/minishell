@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:53:46 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/01 20:06:51 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/01 21:39:30 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,11 @@ char	**get_tokens(t_shell *shell, char *input)
 	i = 0;
 	while (input[i])
 		handle_spesials(input[i++], data);
-	if (data->index == 0 && free_tokenizer(data))
-		return (NULL);
 	if (*(data->token) != '\0')
 		data->tokens[data->index++] = data->token;
 	else
-		free(data->token);
+		if (data->index == 0 && free_tokenizer(data))
+			return (NULL);
 	data->token = NULL;
 	data->tokens[data->index] = NULL;
 	if ((data->in_double_q || data->in_single_q) && free_tokenizer(data))
