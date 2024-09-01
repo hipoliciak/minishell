@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:53:46 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/31 22:52:31 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/01 20:06:51 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ char	**get_tokens(t_shell *shell, char *input)
 	i = 0;
 	while (input[i])
 		handle_spesials(input[i++], data);
+	if (data->index == 0 && free_tokenizer(data))
+		return (NULL);
 	if (*(data->token) != '\0')
 		data->tokens[data->index++] = data->token;
 	else
