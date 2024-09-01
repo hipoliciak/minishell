@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/31 17:15:11 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/01 19:40:15 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,4 +124,7 @@ int			is_builtin(char *command);
 
 //shell
 void		shell_exec(t_shell *shell, char **tokens);
+int			shell_exec_in_child(t_shell *shell, int *pipe_fd, int in_fd, int i);
+void		shell_print_output(int terminal_fd, int *pipe_fd);
+
 #endif

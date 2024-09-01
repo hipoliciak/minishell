@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:24:00 by dkolida           #+#    #+#             */
-/*   Updated: 2024/08/31 18:50:00 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/01 19:39:31 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int		shell_exec_group(t_shell *shell, int *pipe_fd, int in_fd, int i);
 int		shell_exec_buildin(t_shell *shell, int *pipe_fd, int in_fd, int i);
 int		shell_exec_in_child(t_shell *shell, int *pipe_fd, int in_fd, int i);
-void	shell_print_output(int terminal_fd, int *pipe_fd);
 
 void	shell_exec(t_shell *shell, char **tokens)
 {
@@ -29,10 +28,7 @@ void	shell_exec(t_shell *shell, char **tokens)
 		group_input(shell, tokens);
 		terminal_fd = dup(STDOUT_FILENO);
 		if (terminal_fd == -1)
-		{
-			perror("dup");
-			exit(EXIT_FAILURE);
-		}
+			perror("duplicate terminal_fd failed");
 		i = 0;
 		in_fd = -1;
 		while (i <= shell->group_i)
@@ -41,6 +37,7 @@ void	shell_exec(t_shell *shell, char **tokens)
 			in_fd = shell_exec_group(shell, pipe_fd, in_fd, i++);
 		}
 		shell_print_output(terminal_fd, pipe_fd);
+		close(terminal_fd);
 		ft_free_split(tokens);
 	}
 	free_groups(shell->groups, shell->tokens_count);
@@ -92,47 +89,23 @@ int	shell_exec_buildin(t_shell *shell, int *pipe_fd, int in_fd, int i)
 	return (in_fd);
 }
 
-int	shell_exec_in_child(t_shell *shell, int *pipe_fd, int in_fd, int i)
-{
-	int	pid;
-
-	pid = make_fork();
-	if (pid == 0)
-	{
-		if (in_fd > 0)
-		{
-			dup2(in_fd, STDIN_FILENO);
-			close(in_fd);
-		}
-		close(pipe_fd[0]);
-		dup2(pipe_fd[1], STDOUT_FILENO);
-		close(pipe_fd[1]);
-		exec_command(shell, shell->groups[i]->args);
-		exit(shell->last_exit_code);
-	}
-	close(pipe_fd[1]);
-	in_fd = dup(pipe_fd[0]);
-	if (i < shell->group_i)
-		close(pipe_fd[0]);
-	else
-		close(in_fd);
-	return (in_fd);
-}
-
-void	shell_print_output(int terminal_fd, int *pipe_fd)
+void	shell_print_output(int fd, int *pipe_fd)
 {
 	char	buffer[BUFFER_SIZE];
 	ssize_t	bytes_read;
 
+	if (fd == -1)
+	{
+		perror("file descriptor error");
+		exit(EXIT_FAILURE);
+	}
 	bytes_read = read(pipe_fd[0], buffer, BUFFER_SIZE - 1);
 	while (bytes_read > 0)
 	{
 		buffer[bytes_read] = '\0';
-		write(terminal_fd, buffer, bytes_read);
+		write(fd, buffer, bytes_read);
 		bytes_read = read(pipe_fd[0], buffer, BUFFER_SIZE - 1);
 	}
-	if (bytes_read == -1)
-		perror("read");
-	close(terminal_fd);
-	close(pipe_fd[0]);
+	if (bytes_read != -1)
+		close(pipe_fd[0]);
 }
