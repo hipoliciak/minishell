@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/31 17:13:38 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/02 00:07:44 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	free_shell(t_shell *shell)
 int	run_shell(t_shell *shell)
 {
 	char	*line;
-	char	**tokens;
 
 	line = NULL;
 	while (1)
@@ -64,9 +63,8 @@ int	run_shell(t_shell *shell)
 		}
 		if (*line != '\0')
 		{
-			tokens = get_tokens(shell, line);
 			set_signals_for_execution();
-			shell_exec(shell, tokens);
+			shell_exec(shell, get_tokens(shell, line));
 			set_signals_interactive();
 		}
 	}
