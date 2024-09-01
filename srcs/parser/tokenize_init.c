@@ -6,11 +6,11 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 23:51:06 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/28 00:29:36 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/01 23:05:30 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tokenize.h"
+#include "minishell.h"
 
 t_tokenizer	*tokenizer_init(int token_count)
 {

@@ -6,21 +6,20 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:53:46 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/01 22:37:17 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/01 23:58:52 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tokenize.h"
+#include "minishell.h"
 
 static void	handle_spesials(char c, t_tokenizer *data);
 static void	handle_quotes(char c, t_tokenizer *data);
 static void	handle_quote(t_tokenizer *data, char c, int *other_q, int *this_q);
 
-char	**get_tokens(t_shell *shell, char *input)
+t_tokenizer	*get_tokens(t_shell *shell, char *input)
 {
 	t_tokenizer	*data;
 	int			i;
-	char		**tokens;
 
 	data = tokenizer_init(ft_strlen(input));
 	if (!data)
@@ -38,10 +37,7 @@ char	**get_tokens(t_shell *shell, char *input)
 		&& free_tokenizer(data))
 		return (NULL);
 	interpolate(shell, data);
-	tokens = data->tokens;
-	data->tokens = NULL;
-	free_tokenizer(data);
-	return (tokens);
+	return (data);
 }
 
 static void	handle_spesials(char c, t_tokenizer *data)
