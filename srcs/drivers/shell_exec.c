@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:24:00 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/01 23:59:58 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/02 22:33:53 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,10 @@ void	shell_print_output(int fd, int *pipe_fd)
 		bytes_read = read(pipe_fd[0], buffer, BUFFER_SIZE - 1);
 	}
 	if (bytes_read != -1)
-		close(pipe_fd[0]);
+	{
+		if (errno == EINTR)
+			shell_print_output(fd, pipe_fd);
+		else
+			close(pipe_fd[0]);
+	}
 }

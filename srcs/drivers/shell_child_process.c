@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_child_process.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 19:36:59 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/01 19:37:56 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/01 21:25:21 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ int	shell_exec_in_child(t_shell *shell, int *pipe_fd, int in_fd, int i)
 
 	pid = make_fork();
 	if (pid == 0)
+	{
+		reset_signals();
 		shell_child_proccess(shell, pipe_fd, in_fd, i);
+	}
 	close(pipe_fd[1]);
 	in_fd = dup(pipe_fd[0]);
 	if (shell->groups[i]->out_file_name)

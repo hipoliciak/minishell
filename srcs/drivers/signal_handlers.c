@@ -6,7 +6,7 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 19:21:53 by dkolida           #+#    #+#             */
-/*   Updated: 2024/08/31 17:36:04 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/01 21:24:53 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,32 +21,40 @@ void	sigint_handler(int sig_num)
 	rl_redisplay();
 }
 
-void	set_signals_interactive(void)
+void	sigint_handler_blocked(int sig_num)
 {
-	struct sigaction	act;
-
-	ignore_sigquit();
-	ft_memset(&act, 0, sizeof(act));
-	act.sa_handler = &sigint_handler;
-	act.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &act, NULL);
+	(void)sig_num;
+	ft_putendl_fd("", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
 }
 
-void	ignore_sigquit(void)
+void	set_signal_handlers(int interactive)
 {
 	struct sigaction	act;
 
 	ft_memset(&act, 0, sizeof(act));
-	act.sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, &act, NULL);
+	if (interactive)
+	{
+		act.sa_handler = &sigint_handler;
+		sigaction(SIGINT, &act, NULL);
+		act.sa_handler = SIG_IGN;
+		sigaction(SIGQUIT, &act, NULL);
+	}
+	else
+	{
+		act.sa_handler = SIG_IGN;
+		sigaction(SIGINT, &act, NULL);
+		sigaction(SIGQUIT, &act, NULL);
+	}
 }
 
-void	set_signals_for_execution(void)
+void	reset_signals(void)
 {
 	struct sigaction	act;
 
 	ft_memset(&act, 0, sizeof(act));
-	act.sa_handler = SIG_IGN;
+	act.sa_handler = &sigint_handler_blocked;
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
 }

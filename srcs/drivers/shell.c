@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/09/02 00:07:44 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/02 22:34:57 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	run_shell(t_shell *shell)
 	line = NULL;
 	while (1)
 	{
-		set_signals_interactive();
+		set_signal_handlers(1);
 		line = ft_read_line(line);
 		if (!line)
 		{
@@ -63,9 +63,8 @@ int	run_shell(t_shell *shell)
 		}
 		if (*line != '\0')
 		{
-			set_signals_for_execution();
+			set_signal_handlers(0);
 			shell_exec(shell, get_tokens(shell, line));
-			set_signals_interactive();
 		}
 	}
 	return (0);

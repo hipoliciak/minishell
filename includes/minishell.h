@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/09/01 23:58:03 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/02 22:28:31 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,14 @@ char		*ft_read_line(char *line);
 t_shell		*init_shell(char **env);
 int			run_shell(t_shell *shell);
 void		free_shell(t_shell *shell);
-void		sigint_handler(int sig_num);
-void		ignore_sigquit(void);
-void		set_signals_interactive(void);
-void		set_signals_for_execution(void);
 int			exec_builtin(t_shell *shell, char **args);
 int			is_builtin(char *command);
+
+// signals
+void		sigint_handler(int sig_num);
+void		sigint_handler_blocked(int sig_num);
+void		set_signal_handlers(int interactive);
+void		reset_signals(void);
 
 // lexer
 void		group_input(t_shell *shell, t_tokenizer *data);
