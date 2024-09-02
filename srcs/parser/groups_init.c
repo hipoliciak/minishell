@@ -6,57 +6,55 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 22:22:09 by dkolida           #+#    #+#             */
-/*   Updated: 2024/08/30 21:34:41 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/02 01:30:41 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 t_group	*group_init(int argc);
-void	add_to_group(t_shell *shell, char *token, int is_end);
-int		shell_groups_init(t_shell *shell, char **tokens);
+void	add_to_group(t_shell *shell, char *token, int not_interp, int i);
+void	shell_groups_init(t_shell *shell, int tokens_count);
 
-void	group_input(t_shell *shell, char **tokens)
+void	group_input(t_shell *shell, t_tokenizer *data)
 {
-	int	tokens_c;
 	int	i;
-	int	*group_i;
+	int	*grp_i;
+	int	*not_interp;
 
-	group_i = &shell->group_i;
-	tokens_c = shell_groups_init(shell, tokens);
-	shell->tokens_count = tokens_c;
+	grp_i = &shell->group_i;
+	not_interp = data->not_interpolate;
+	shell_groups_init(shell, data->index);
+	shell->tokens_count = data->index;
 	i = 0;
-	while (tokens[i])
+	while (data->tokens[i])
 	{
-		if (!shell->groups[*group_i])
-			shell->groups[*group_i] = group_init(tokens_c);
-		if (ft_strcmp(tokens[i], "<") == 0)
-			shell->groups[*group_i]->in_file_name = ft_strdup(tokens[++i]);
-		else if (ft_strcmp(tokens[i], ">") == 0)
-			shell->groups[*group_i]->out_file_name = ft_strdup(tokens[++i]);
+		if (!shell->groups[*grp_i])
+			shell->groups[*grp_i] = group_init(shell->tokens_count);
+		if (ft_strcmp(data->tokens[i], "<") == 0 && not_interp[i] == 0)
+			shell->groups[*grp_i]->in_file_name = ft_strdup(data->tokens[++i]);
+		else if (ft_strcmp(data->tokens[i], ">") == 0 && not_interp[i] == 0)
+			shell->groups[*grp_i]->out_file_name = ft_strdup(data->tokens[++i]);
 		else
-			add_to_group(shell, tokens[i], i == tokens_c - 1);
+			add_to_group(shell, data->tokens[i], not_interp[i], i);
 		i++;
 	}
-	if (*group_i > 0)
-		(*group_i)--;
 }
-//The group_i variable is used to keep track of the current group index later.
 
-void	add_to_group(t_shell *shell, char *token, int is_end)
+void	add_to_group(t_shell *shell, char *token, int not_interp, int token_i)
 {
 	int	*i;
 	int	*arg_i;
 
 	i = &shell->group_i;
 	arg_i = &shell->groups[*i]->arg_i;
-	if (ft_strcmp(token, "|") == 0 || is_end)
+	if (ft_strcmp(token, "|") == 0 && !not_interp)
 	{
-		if ((is_end && ft_strcmp(token, "|") != 0)
-			|| (((*arg_i) > 0)
-				&& (ft_strcmp(shell->groups[*i]->args[(*arg_i) - 1], "echo")
-					== 0)))
-			shell->groups[*i]->args[(*arg_i)++] = ft_strdup(token);
+		if (shell->tokens_count == token_i + 1)
+		{
+			perror("syntax error near unexpected token |");
+			return ;
+		}
 		(*i)++;
 	}
 	else
@@ -84,20 +82,15 @@ t_group	*group_init(int argc)
 	return (group);
 }
 
-int	shell_groups_init(t_shell *shell, char **tokens)
+void	shell_groups_init(t_shell *shell, int tokens_count)
 {
-	int	tokens_count;
 	int	i;
 
-	tokens_count = 0;
-	while (tokens[tokens_count])
-		tokens_count++;
 	shell->groups = malloc(sizeof(t_group *) * (tokens_count + 1));
 	if (!shell->groups)
-		return (0);
+		return ;
 	shell->group_i = 0;
 	i = 0;
 	while (i < tokens_count)
 		shell->groups[i++] = NULL;
-	return (tokens_count);
 }

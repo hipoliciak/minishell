@@ -6,11 +6,11 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 01:47:26 by dkolida           #+#    #+#             */
-/*   Updated: 2024/07/28 04:49:57 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/01 23:05:54 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tokenize.h"
+#include "minishell.h"
 
 static char	*data_str(char *str, int *i, t_shell *shell);
 

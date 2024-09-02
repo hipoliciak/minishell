@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:24:00 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/01 19:39:31 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/01 23:59:58 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int		shell_exec_group(t_shell *shell, int *pipe_fd, int in_fd, int i);
 int		shell_exec_buildin(t_shell *shell, int *pipe_fd, int in_fd, int i);
 int		shell_exec_in_child(t_shell *shell, int *pipe_fd, int in_fd, int i);
 
-void	shell_exec(t_shell *shell, char **tokens)
+void	shell_exec(t_shell *shell, t_tokenizer *tokens)
 {
 	int		i;
 	int		in_fd;
@@ -38,7 +38,7 @@ void	shell_exec(t_shell *shell, char **tokens)
 		}
 		shell_print_output(terminal_fd, pipe_fd);
 		close(terminal_fd);
-		ft_free_split(tokens);
+		free_tokenizer(tokens);
 	}
 	free_groups(shell->groups, shell->tokens_count);
 }
