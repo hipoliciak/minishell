@@ -6,11 +6,11 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 01:47:26 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/01 19:59:28 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/02 22:26:50 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tokenize.h"
+#include "minishell.h"
 
 static char	*data_str(char *str, int *i, t_shell *shell);
 

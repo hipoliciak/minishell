@@ -6,7 +6,7 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:24:00 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/01 21:27:20 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/02 22:33:53 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int		shell_exec_group(t_shell *shell, int *pipe_fd, int in_fd, int i);
 int		shell_exec_buildin(t_shell *shell, int *pipe_fd, int in_fd, int i);
 int		shell_exec_in_child(t_shell *shell, int *pipe_fd, int in_fd, int i);
 
-void	shell_exec(t_shell *shell, char **tokens)
+void	shell_exec(t_shell *shell, t_tokenizer *tokens)
 {
 	int		i;
 	int		in_fd;
@@ -38,7 +38,7 @@ void	shell_exec(t_shell *shell, char **tokens)
 		}
 		shell_print_output(terminal_fd, pipe_fd);
 		close(terminal_fd);
-		ft_free_split(tokens);
+		free_tokenizer(tokens);
 	}
 	free_groups(shell->groups, shell->tokens_count);
 }
@@ -99,11 +99,13 @@ void	shell_print_output(int fd, int *pipe_fd)
 		perror("file descriptor error");
 		exit(EXIT_FAILURE);
 	}
-    while ((bytes_read = read(pipe_fd[0], buffer, BUFFER_SIZE - 1)) > 0)
-    {
-        buffer[bytes_read] = '\0';
-        write(fd, buffer, bytes_read);
-    }
+	bytes_read = read(pipe_fd[0], buffer, BUFFER_SIZE - 1);
+	while (bytes_read > 0)
+	{
+		buffer[bytes_read] = '\0';
+		write(fd, buffer, bytes_read);
+		bytes_read = read(pipe_fd[0], buffer, BUFFER_SIZE - 1);
+	}
 	if (bytes_read != -1)
 	{
 		if (errno == EINTR)

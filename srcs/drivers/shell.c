@@ -6,7 +6,7 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:58:23 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/09/01 20:55:52 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/02 22:34:57 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	free_shell(t_shell *shell)
 int	run_shell(t_shell *shell)
 {
 	char	*line;
-	char	**tokens;
 
 	line = NULL;
 	while (1)
@@ -64,9 +63,8 @@ int	run_shell(t_shell *shell)
 		}
 		if (*line != '\0')
 		{
-			tokens = get_tokens(shell, line);
 			set_signal_handlers(0);
-			shell_exec(shell, tokens);
+			shell_exec(shell, get_tokens(shell, line));
 		}
 	}
 	return (0);
