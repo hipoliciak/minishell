@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 19:36:59 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/03 17:52:31 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/03 17:57:39 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,5 @@ void	update_exit_code(t_shell *shell, int pid)
 
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
-		shell->last_exit_code = WEXITSTATUS(status);
+		shell->last_exit_code = (int)WEXITSTATUS(status);
 }
