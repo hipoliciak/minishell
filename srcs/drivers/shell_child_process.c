@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   shell_child_process.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 19:36:59 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/01 21:25:21 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/03 18:35:21 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 void	shell_child_proccess(t_shell *shell, int *pipe_fd, int in_fd, int i);
+void	update_exit_code(t_shell *shell, int pid);
 
 int	shell_exec_in_child(t_shell *shell, int *pipe_fd, int in_fd, int i)
 {
@@ -34,7 +35,10 @@ int	shell_exec_in_child(t_shell *shell, int *pipe_fd, int in_fd, int i)
 		if (i < shell->group_i)
 			close(pipe_fd[0]);
 		else
+		{
 			close(in_fd);
+			update_exit_code(shell, pid);
+		}
 	}
 	return (in_fd);
 }
@@ -50,4 +54,12 @@ void	shell_child_proccess(t_shell *shell, int *pipe_fd, int in_fd, int i)
 	dup2(pipe_fd[1], STDOUT_FILENO);
 	close(pipe_fd[1]);
 	exec_command(shell, shell->groups[i]->args);
+}
+
+void	update_exit_code(t_shell *shell, int pid)
+{
+	int	status;
+
+	waitpid(pid, &status, 0);
+	shell->last_exit_code = status >> 8;
 }
