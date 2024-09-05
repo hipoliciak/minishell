@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execve.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 22:35:37 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/09/01 19:31:05 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/05 22:21:44 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,11 @@ char	*get_path(char **path, char *cmd)
 
 int	is_absolute_or_relative_path(char *cmd)
 {
-	if (cmd[0] == '/')
-		return (1);
-	if (cmd[0] == '.' && cmd[1] == '/')
-		return (1);
+	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
+	{
+		if (access(cmd, F_OK) == 0)
+			return (1);
+	}
 	return (0);
 }
 
@@ -75,17 +76,15 @@ char	*set_path(t_shell *shell, char **args)
 	char	**path;
 	char	*full_path;
 
-	if (is_absolute_or_relative_path(args[0]))
-	{
-		if (access(args[0], F_OK) == 0)
-			return (ft_strdup(args[0]));
-		shell->last_exit_code = 127;
-		ft_putendl_fd(" command not found", 2);
-		return (NULL);
-	}
+	if (is_absolute_or_relative_path(args[0]) != 0)
+		return (ft_strdup(args[0]));
 	path = envp_path(shell->env);
 	if (!path)
+	{
+		ft_putendl_fd(" command not found", 2);
+		shell->last_exit_code = 127;
 		return (NULL);
+	}
 	full_path = get_path(path, args[0]);
 	if (!full_path)
 	{
@@ -107,6 +106,8 @@ int	execve_path(t_shell *shell, char **args)
 	if (!full_path)
 		return (1);
 	status = execve(full_path, args, shell->env);
+	if (status == -1)
+		status = 126;
 	perror("execve");
 	free(full_path);
 	exit(status);
