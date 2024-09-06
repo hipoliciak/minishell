@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 22:22:09 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/02 01:30:41 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/06 14:17:24 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	group_input(t_shell *shell, t_tokenizer *data)
 		if (ft_strcmp(data->tokens[i], "<") == 0 && not_interp[i] == 0)
 			shell->groups[*grp_i]->in_file_name = ft_strdup(data->tokens[++i]);
 		else if (ft_strcmp(data->tokens[i], ">") == 0 && not_interp[i] == 0)
-			shell->groups[*grp_i]->out_file_name = ft_strdup(data->tokens[++i]);
+			file_out_redir(data, shell->groups[*grp_i], &i);
 		else
 			add_to_group(shell, data->tokens[i], not_interp[i], i);
 		i++;
@@ -79,6 +79,7 @@ t_group	*group_init(int argc)
 	group->arg_i = 0;
 	group->in_file_name = NULL;
 	group->out_file_name = NULL;
+	group->out_file_append = 0;
 	return (group);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:24:00 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/02 22:33:53 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:19:34 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	shell_exec_buildin(t_shell *shell, int *pipe_fd, int in_fd, int i)
 	if (shell->groups[i]->out_file_name)
 	{
 		shell->out_fd = open(shell->groups[i]->out_file_name,
-				O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				output_mode(shell->groups[i]->out_file_append), 0644);
 		if (shell->out_fd == -1)
 		{
 			perror("open");
