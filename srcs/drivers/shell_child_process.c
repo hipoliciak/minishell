@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_child_process.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 19:36:59 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/03 18:35:21 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/05 22:18:45 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,17 @@ void	shell_child_proccess(t_shell *shell, int *pipe_fd, int in_fd, int i)
 void	update_exit_code(t_shell *shell, int pid)
 {
 	int	status;
+	int	signal_number;
 
 	waitpid(pid, &status, 0);
-	shell->last_exit_code = status >> 8;
+	if (WIFEXITED(status))
+		shell->last_exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+	{
+		signal_number = WTERMSIG(status);
+		if (signal_number == SIGINT)
+			shell->last_exit_code = 130;
+		else
+			shell->last_exit_code = 128 + signal_number;
+	}
 }

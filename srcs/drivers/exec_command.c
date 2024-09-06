@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:04:36 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/09/01 19:59:55 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/05 21:04:02 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,5 @@ int	exec_builtin(t_shell *shell, char **args)
 void	exec_command(t_shell *shell, char **args)
 {
 	if (execve_path(shell, args) != 0)
-	{
-		shell->last_exit_code = 127;
 		exit(shell->last_exit_code);
-	}
 }

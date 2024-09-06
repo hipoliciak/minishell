@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:12:33 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/31 17:17:27 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/05 20:36:51 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,11 @@ int	export_builtin(t_shell *shell, char **args)
 				exit(1);
 			set_env_var(shell, key_value_pair[0], key_value_pair[1]);
 			free_key_value_pair(key_value_pair);
+			free(shell->env);
+			shell->env = env_vars_to_env(shell->env_vars);
+			if (!shell->env)
+				exit(1);
 		}
-		else
-			set_env_var(shell, args[i], "");
 		i++;
 	}
 	shell->last_exit_code = 0;

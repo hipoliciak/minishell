@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cd_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 23:02:48 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/08/31 18:07:32 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/05 20:43:59 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-//static char *handle_second_arg(char *path, char **args);
 
 static int	arg_error(t_shell *shell)
 {
@@ -62,17 +60,9 @@ int	cd_builtin(t_shell *shell, char **args)
 		return (path_error(shell, path));
 	set_env_var(shell, "OLDPWD", old_pwd);
 	set_env_var(shell, "PWD", getcwd(NULL, 0));
+	free(old_pwd);
+	free(shell->env);
+	shell->env = env_vars_to_env(shell->env_vars);
 	free(path);
 	return (0);
 }
-
-// // test in your terminal how command "cd $PWD {sone existing dir name}" works
-// // if you agree add this function rigth after line 58 (chaking for path)
-// /*
-// static char *handle_second_arg(char *path, char **args)
-// {
-// 	if (args[2])
-// 		path = ft_strjoin_and_free(path, ft_strjoin("/", args[2]));
-// 	return (path);
-// }
-// */

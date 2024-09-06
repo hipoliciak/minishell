@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   groups_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42warsaw.pl>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 01:59:50 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/01 22:35:13 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/05 22:33:21 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ static void	free_group(t_group *group, int tokens_count)
 	int	j;
 
 	j = 0;
+	if (!group)
+		return ;
 	while (group->args && j <= tokens_count)
 	{
 		if (group->args[j] != NULL)
