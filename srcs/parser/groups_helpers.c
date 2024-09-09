@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   groups_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 01:59:50 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/05 22:33:21 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:17:03 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,22 @@ static void	free_group(t_group *group, int tokens_count)
 		free(group->out_file_name);
 		group->out_file_name = NULL;
 	}
+}
+
+void	file_out_redir(t_tokenizer *data, t_group *group, int *i)
+{
+	if (ft_strcmp(data->tokens[(*i) + 1], ">") == 0)
+	{
+		group->out_file_append = 1;
+		(*i)++;
+	}
+	group->out_file_name = ft_strdup(data->tokens[++(*i)]);
+}
+
+int	output_mode(int update_mode)
+{
+	if (update_mode)
+		return (O_WRONLY | O_CREAT | O_APPEND);
+	else
+		return (O_WRONLY | O_CREAT | O_TRUNC);
 }

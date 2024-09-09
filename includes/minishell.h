@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/09/02 22:28:31 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:16:28 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_group
 	char	**args;
 	char	*in_file_name;
 	char	*out_file_name;
+	int		out_file_append;
 	int		arg_i;
 }	t_group;
 
@@ -115,6 +116,8 @@ void		reset_signals(void);
 void		group_input(t_shell *shell, t_tokenizer *data);
 void		print_groups(t_group **groups);
 void		free_groups(t_group **groups, int tokens_count);
+void		file_out_redir(t_tokenizer *data, t_group *group, int *i);
+int			output_mode(int update_mode);
 
 // helpers
 void		ft_free_split(char **split);

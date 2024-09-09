@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_child_process.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmodrzej <dmodrzej@student.42warsaw.pl>    +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 19:36:59 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/05 22:18:45 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/06 16:17:26 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	shell_exec_in_child(t_shell *shell, int *pipe_fd, int in_fd, int i)
 	in_fd = dup(pipe_fd[0]);
 	if (shell->groups[i]->out_file_name)
 		shell_print_output(open(shell->groups[i]->out_file_name,
-				O_WRONLY | O_CREAT | O_TRUNC, 0644), pipe_fd);
+				output_mode(shell->groups[i]->out_file_append), 0644), pipe_fd);
 	else
 	{
 		if (i < shell->group_i)
