@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 22:22:09 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/14 01:40:26 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/14 01:49:28 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,13 @@ void	shell_groups_init(t_shell *shell, int tokens_count)
 int	handle_redirects(t_shell *shell, t_tokenizer *data, int *grp_i, int *i)
 {
 	int		*not_interp;
-	char	*in_file_name;
 
-	in_file_name = shell->groups[*grp_i]->in_file_name;
 	not_interp = data->not_interpolate;
 	if (ft_strcmp(data->tokens[*i], "<") == 0 && not_interp[*i] == 0)
 	{
 		if (data->tokens[(*i) + 1])
-			in_file_name = ft_strdup(data->tokens[++(*i)]);
+			shell->groups[*grp_i]->in_file_name
+				= ft_strdup(data->tokens[++(*i)]);
 		else
 			return (0);
 	}
