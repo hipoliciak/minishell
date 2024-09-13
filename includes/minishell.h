@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/09/06 16:16:28 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/14 01:09:38 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void		set_signal_handlers(int interactive);
 void		reset_signals(void);
 
 // lexer
-void		group_input(t_shell *shell, t_tokenizer *data);
+int			group_input(t_shell *shell, t_tokenizer *data);
 void		print_groups(t_group **groups);
 void		free_groups(t_group **groups, int tokens_count);
 void		file_out_redir(t_tokenizer *data, t_group *group, int *i);
