@@ -6,7 +6,7 @@
 /*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 12:53:46 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/14 18:34:32 by dmodrzej         ###   ########.fr       */
+/*   Updated: 2024/09/14 19:10:03 by dmodrzej         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	handle_spesials(char c, t_tokenizer *data)
 	{
 		if (c == '"' || c == '\'')
 			handle_quotes(c, data);
-		else if (ft_strchr("|><; '\"", c)
+		else if (ft_strchr("|><; ", c)
 			&& !data->in_double_q
 			&& !data->in_single_q)
 		{
@@ -82,8 +82,6 @@ static void	handle_quote(t_tokenizer *data, char c, int *other_q, int *this_q)
 		if (*this_q)
 		{
 			if (c == '\'')
-				data->not_interpolate[data->index] = 1;
-			else if (c == '"')
 				data->not_interpolate[data->index] = 1;
 			*this_q = 0;
 		}
