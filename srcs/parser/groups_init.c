@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   groups_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dmodrzej <dmodrzej@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 22:22:09 by dkolida           #+#    #+#             */
 /*   Updated: 2024/09/14 17:26:38 by dkolida          ###   ########.fr       */
@@ -33,8 +33,9 @@ int	group_input(t_shell *shell, t_tokenizer *data)
 	{
 		if (!shell->groups[*grp_i])
 			shell->groups[*grp_i] = group_init(shell->tokens_count);
-		if (ft_strcmp(data->tokens[i], "<") == 0
-			|| ft_strcmp(data->tokens[i], ">") == 0)
+		if ((ft_strcmp(data->tokens[i], "<") == 0
+				|| ft_strcmp(data->tokens[i], ">") == 0)
+			&& not_interp[i] == 0 && data->tokens[i + 1])
 		{
 			if (!handle_redirects(shell, data, grp_i, &i))
 				return (0);
