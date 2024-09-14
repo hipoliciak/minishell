@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 22:22:09 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/14 01:49:28 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/14 17:26:38 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ t_group	*group_init(int argc);
 void	add_to_group(t_shell *shell, char *token, int not_interp, int i);
 void	shell_groups_init(t_shell *shell, int tokens_count);
 int		handle_redirects(t_shell *shell, t_tokenizer *data, int *grp_i, int *i);
+void	heredoc(t_shell *shell, t_tokenizer *data, int *grp_i, int *i);
 
 int	group_input(t_shell *shell, t_tokenizer *data)
 {
@@ -108,8 +109,14 @@ int	handle_redirects(t_shell *shell, t_tokenizer *data, int *grp_i, int *i)
 	if (ft_strcmp(data->tokens[*i], "<") == 0 && not_interp[*i] == 0)
 	{
 		if (data->tokens[(*i) + 1])
-			shell->groups[*grp_i]->in_file_name
-				= ft_strdup(data->tokens[++(*i)]);
+		{
+			if (ft_strcmp(data->tokens[(*i) + 1], "<") == 0)
+				heredoc(shell, data, grp_i, i);
+			else
+				shell->groups[*grp_i]->in_file_name
+					= ft_strdup(data->tokens[++(*i)]);
+			return (1);
+		}
 		else
 			return (0);
 	}

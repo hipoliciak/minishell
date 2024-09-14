@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 21:40:52 by dmodrzej          #+#    #+#             */
-/*   Updated: 2024/09/14 01:09:38 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/14 17:27:28 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,5 +144,8 @@ void		shell_exec(t_shell *shell, t_tokenizer *tokens);
 
 int			shell_exec_in_child(t_shell *shell, int *pipe_fd, int in_fd, int i);
 void		shell_print_output(int terminal_fd, int *pipe_fd);
+
+// heredoc
+void		heredoc(t_shell *shell, t_tokenizer *data, int *grp_i, int *i);
 
 #endif
