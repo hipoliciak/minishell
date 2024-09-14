@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:24:00 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/06 16:19:34 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/14 01:21:36 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,19 @@
 int		shell_exec_group(t_shell *shell, int *pipe_fd, int in_fd, int i);
 int		shell_exec_buildin(t_shell *shell, int *pipe_fd, int in_fd, int i);
 int		shell_exec_in_child(t_shell *shell, int *pipe_fd, int in_fd, int i);
+void	shell_exec_loop(t_shell *shell);
 
 void	shell_exec(t_shell *shell, t_tokenizer *tokens)
 {
-	int		i;
-	int		in_fd;
-	int		pipe_fd[2];
-	int		terminal_fd;
-
 	if (tokens)
 	{
-		group_input(shell, tokens);
-		terminal_fd = dup(STDOUT_FILENO);
-		if (terminal_fd == -1)
-			perror("duplicate terminal_fd failed");
-		i = 0;
-		in_fd = -1;
-		while (i <= shell->group_i)
+		if (group_input(shell, tokens))
+			shell_exec_loop(shell);
+		else
 		{
-			make_pipe(pipe_fd);
-			in_fd = shell_exec_group(shell, pipe_fd, in_fd, i++);
+			shell->last_exit_code = 127;
+			ft_putendl_fd("syntax error near unexpected token '\\n'", 2);
 		}
-		shell_print_output(terminal_fd, pipe_fd);
-		close(terminal_fd);
 		free_tokenizer(tokens);
 	}
 	free_groups(shell->groups, shell->tokens_count);
@@ -113,4 +103,25 @@ void	shell_print_output(int fd, int *pipe_fd)
 		else
 			close(pipe_fd[0]);
 	}
+}
+
+void	shell_exec_loop(t_shell *shell)
+{
+	int	terminal_fd;
+	int	pipe_fd[2];
+	int	i;
+	int	in_fd;
+
+	terminal_fd = dup(STDOUT_FILENO);
+	if (terminal_fd == -1)
+		perror("duplicate terminal_fd failed");
+	i = 0;
+	in_fd = -1;
+	while (i <= shell->group_i)
+	{
+		make_pipe(pipe_fd);
+		in_fd = shell_exec_group(shell, pipe_fd, in_fd, i++);
+	}
+	shell_print_output(terminal_fd, pipe_fd);
+	close(terminal_fd);
 }

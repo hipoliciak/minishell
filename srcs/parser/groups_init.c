@@ -6,7 +6,7 @@
 /*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 22:22:09 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/06 14:17:24 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/14 01:49:28 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 t_group	*group_init(int argc);
 void	add_to_group(t_shell *shell, char *token, int not_interp, int i);
 void	shell_groups_init(t_shell *shell, int tokens_count);
+int		handle_redirects(t_shell *shell, t_tokenizer *data, int *grp_i, int *i);
 
-void	group_input(t_shell *shell, t_tokenizer *data)
+int	group_input(t_shell *shell, t_tokenizer *data)
 {
 	int	i;
 	int	*grp_i;
@@ -31,14 +32,17 @@ void	group_input(t_shell *shell, t_tokenizer *data)
 	{
 		if (!shell->groups[*grp_i])
 			shell->groups[*grp_i] = group_init(shell->tokens_count);
-		if (ft_strcmp(data->tokens[i], "<") == 0 && not_interp[i] == 0)
-			shell->groups[*grp_i]->in_file_name = ft_strdup(data->tokens[++i]);
-		else if (ft_strcmp(data->tokens[i], ">") == 0 && not_interp[i] == 0)
-			file_out_redir(data, shell->groups[*grp_i], &i);
+		if (ft_strcmp(data->tokens[i], "<") == 0
+			|| ft_strcmp(data->tokens[i], ">") == 0)
+		{
+			if (!handle_redirects(shell, data, grp_i, &i))
+				return (0);
+		}
 		else
 			add_to_group(shell, data->tokens[i], not_interp[i], i);
 		i++;
 	}
+	return (1);
 }
 
 void	add_to_group(t_shell *shell, char *token, int not_interp, int token_i)
@@ -94,4 +98,27 @@ void	shell_groups_init(t_shell *shell, int tokens_count)
 	i = 0;
 	while (i < tokens_count)
 		shell->groups[i++] = NULL;
+}
+
+int	handle_redirects(t_shell *shell, t_tokenizer *data, int *grp_i, int *i)
+{
+	int		*not_interp;
+
+	not_interp = data->not_interpolate;
+	if (ft_strcmp(data->tokens[*i], "<") == 0 && not_interp[*i] == 0)
+	{
+		if (data->tokens[(*i) + 1])
+			shell->groups[*grp_i]->in_file_name
+				= ft_strdup(data->tokens[++(*i)]);
+		else
+			return (0);
+	}
+	else if (ft_strcmp(data->tokens[*i], ">") == 0 && not_interp[*i] == 0)
+	{
+		if (data->tokens[(*i) + 1])
+			file_out_redir(data, shell->groups[*grp_i], i);
+		else
+			return (0);
+	}
+	return (1);
 }
