@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkolida <dkolida@student.42warsaw.pl>      +#+  +:+       +#+        */
+/*   By: dkolida <dkolida@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 19:24:00 by dkolida           #+#    #+#             */
-/*   Updated: 2024/09/14 01:21:36 by dkolida          ###   ########.fr       */
+/*   Updated: 2024/09/14 15:54:51 by dkolida          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	shell_exec(t_shell *shell, t_tokenizer *tokens)
 			ft_putendl_fd("syntax error near unexpected token '\\n'", 2);
 		}
 		free_tokenizer(tokens);
+		free_groups(shell->groups, shell->tokens_count);
 	}
-	free_groups(shell->groups, shell->tokens_count);
 }
 
 int	shell_exec_group(t_shell *shell, int *pipe_fd, int in_fd, int i)
